@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>TenFlix</title>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
+			rel="stylesheet"
+		/>
+
+		<style>
+			body {
+				font-family: 'Inter';
+				margin: 0;
+				box-sizing: border-box;
+			}
+
+			.navbar {
+				height: 40px;
+				width: 100%;
+				background-color: #ffffff;
+				position: fixed;
+				top: 0;
+				left: 0;
+				z-index: 100;
+			}
+
+			.navbar-wrapper {
+				height: 100%;
+				width: calc(100% - 80px);
+				margin: 0 40px;
+				display: flex;
+				flex-direction: row;
+				justify-content: space-between;
+				align-items: center;
+			}
+
+			.navbar-link-wrapper {
+				display: flex;
+				flex-direction: row;
+				justify-content: flex-start;
+				align-items: center;
+				width: 40%;
+			}
+
+			.navbar-link-wrapper:last-child {
+				justify-content: flex-end;
+			}
+
+			.navbar-link-wrapper > :not(:last-child) {
+				margin-right: 10px;
+			}
+
+			.navbar-link-wrapper > a {
+				color: #000;
+				text-transform: capitalize;
+				text-decoration: none;
+			}
+
+			.content-wrapper {
+				display: flex;
+				flex-direction: column;
+				width: calc(100% - 80px);
+				margin: 0 40px;
+			}
+
+			.content-wrapper > :last-child {
+				margin-bottom: 40px;
+			}
+
+			.content {
+				height: calc(100vh - 80px);
+				width: 100%;
+				margin-top: 40px;
+				position: relative;
+
+				background-size: cover;
+				background-position: center;
+			}
+
+			.meta-wrapper {
+				display: flex;
+				flex-direction: column;
+				position: absolute;
+				bottom: 40px;
+				left: 40px;
+				width: 450px;
+			}
+
+			.meta-gradient {
+				height: 100%;
+				width: 100%;
+				background: linear-gradient(
+					180deg,
+					#00000000 0%,
+					#000000cc 90%,
+					#000000 100%
+				);
+			}
+
+			.meta-title {
+				display: block;
+				height: 170px;
+				width: 100%;
+				margin-bottom: 15px;
+
+				background-size: contain;
+				background-position: left bottom;
+				background-repeat: no-repeat;
+			}
+
+			.meta-title-text {
+				font-size: 50px;
+				font-family: 'Roboto', sans-serif;
+				font-weight: 700;
+				max-width: 400px;
+				color: #ffffff;
+				margin-bottom: 15px;
+			}
+
+			.meta-tagline {
+				font-size: 16px;
+				font-weight: 400;
+				color: #ffffff;
+				margin: 0;
+				margin-bottom: 15px;
+			}
+
+			.meta-button-wrapper {
+				display: flex;
+				flex-direction: row;
+				margin-bottom: 15px;
+			}
+
+			.meta-button-wrapper > :not(:last-of-type) {
+				margin-right: 25px;
+			}
+
+			.meta-button {
+				font-size: 15px;
+				font-weight: 600;
+				color: #ffffff;
+				background-color: #00000059;
+				width: 45%;
+				padding: 15px 0;
+				text-align: center;
+				text-decoration: none;
+			}
+
+			.meta-button:hover {
+				cursor: pointer;
+			}
+		</style>
+	</head>
+	<body>
+		<nav class="navbar">
+			<div class="navbar-wrapper">
+				<div class="navbar-link-wrapper">
+					<a href="">home</a>
+					<a href="">watchlist</a>
+				</div>
+				<div>
+					<span>logo here</span>
+				</div>
+				<div class="navbar-link-wrapper">
+					<span>user</span>
+				</div>
+			</div>
+		</nav>
+		<main class="content-wrapper">
+			<div class="content" style="background-image: url('./dune.jpg')">
+				<div class="meta-gradient">
+					<div class="meta-wrapper">
+						<div
+							class="meta-title"
+							style="background-image: url('./dune_logo.png')"
+						></div>
+						<p class="meta-tagline">
+							Feature adaptation of the novel about the son of a noble family
+							entrusted with the protection of the most valuable.
+						</p>
+						<div class="meta-button-wrapper">
+							<a class="meta-button">Add to Watchlist</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</main>
+	</body>
+</html>
