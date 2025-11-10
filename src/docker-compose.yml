@@ -7,6 +7,7 @@ services:
     volumes:
       - ./TenFlix:/var/www/html
     # ensured db starts before app
+      - tenflix_vendor:/var/www/html/vendor
     depends_on:
       - db
 
@@ -16,7 +17,7 @@ services:
       - "8080:80"
     # mounts the laravel project & config into the Nginx container 
     volumes:
-      - ./TenFlix:/var/www/html
+      - ./TenFlix:/var/www/html:ro
       - ./nginx.conf:/etc/nginx/conf.d:ro
     #ensure apps starts before web  
     depends_on:
