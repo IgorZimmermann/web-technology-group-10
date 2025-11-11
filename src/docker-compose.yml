@@ -6,8 +6,6 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: tenflix-app
-    depends_on:
-      - db
     ports:
       - "8080:8000"
     environment:
@@ -19,8 +17,7 @@ services:
       DB_DATABASE: movieweb
       DB_USERNAME: movieweb
       DB_PASSWORD: secret
-    volumes:
-      - ./TenFlix:/var/www/html
+
 
   db:
     image: postgres:16

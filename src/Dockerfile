@@ -5,8 +5,7 @@ RUN apt-get update && apt-get install -y git zip unzip curl libpq-dev \
 
 WORKDIR /var/www/html
 
-COPY TenFlix/ /var/www/html
-COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+COPY desk_app /var/www/html
 
 RUN docker-php-ext-install pdo_pgsql \
  && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
@@ -14,10 +13,6 @@ RUN docker-php-ext-install pdo_pgsql \
  && cp .env.example .env \
  && php artisan key:generate --ansi
 
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
-
-
 EXPOSE 8000
 
-ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
