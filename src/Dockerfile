@@ -1,16 +1,18 @@
 FROM php:8.2-cli
 
-RUN apt-get update \
-    && apt-get install -y libpq-dev \
-    && docker-php-ext-install pdo_pgsql \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y git zip unzip curl libpq-dev \
+ && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /var/www/html
 
 COPY TenFlix/ /var/www/html
 
-RUN if [ ! -f .env ]; then cp .env.example .env; fi \
-    && php artisan key:generate --ansi
+RUN docker-php-ext-install pdo_pgsql \
+ && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
+ && composer install --no-interaction --prefer-dist --optimize-autoloader \
+ && cp .env.example .env \
+ && php artisan key:generate --ansi
+
 
 EXPOSE 8000
 
