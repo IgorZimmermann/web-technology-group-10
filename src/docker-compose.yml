@@ -1,0 +1,36 @@
+version: "3.9"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tenflix-app
+    ports:
+      - "8080:8000"
+    environment:
+      APP_ENV: local
+      APP_URL: http://localhost:8080
+      DB_CONNECTION: pgsql
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_DATABASE: movieweb
+      DB_USERNAME: movieweb
+      DB_PASSWORD: secret
+
+
+  db:
+    image: postgres:16
+    container_name: tenflix-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: movieweb
+      POSTGRES_USER: movieweb
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+
+volumes:
+  dbdata:

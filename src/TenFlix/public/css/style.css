@@ -30,7 +30,7 @@ input[type="password"] {
   font-style: normal;
   font-weight: 700;
   line-height: normal;
-  
+
   color: #bfbfbf;
   font-family: Inter;
   font-size: 20px;
@@ -73,9 +73,6 @@ input::placeholder {
   font-weight: 500;
   transition: color 0.2s;
 }
-
-
-
 .signup-link a:hover {
   color: #fff;
   text-decoration: underline;

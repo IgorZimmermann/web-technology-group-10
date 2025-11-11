@@ -1,169 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TenFlix</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="watchlist.css">
+@extends('layouts.base')
 
-  <style>
-    body {
-      font-family: 'Inter';
-      margin: 0;
-      box-sizing: border-box;
-      background-color: #1f1f1f;
-    }
+@section('title','TenFlix')
 
-    .navbar {
-      height: 40px;
-      width: 100%;
-      background-color: #1f1f1f;
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 100;
-    }
+@push('styles')
+  <link rel="stylesheet" href="/css/home.css">
+  <link rel="stylesheet" href="/css/watchlist.css">
+@endpush
 
-    .navbar-wrapper {
-      height: 100%;
-      width: calc(100% - 80px);
-      margin: 0 40px;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .navbar-wrapper > * {
-      color: #ffffff;
-    }
-
-    .navbar-link-wrapper {
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-start;
-      align-items: center;
-      width: 40%;
-    }
-
-    .navbar-link-wrapper:last-child {
-      justify-content: flex-end;
-    }
-
-    .navbar-link-wrapper > :not(:last-child) {
-      margin-right: 10px;
-    }
-
-    .navbar-link-wrapper > a {
-      color: #fff;
-      text-transform: capitalize;
-      text-decoration: none;
-    }
-
-    .content-wrapper {
-      display: flex;
-      flex-direction: column;
-      width: calc(100% - 80px);
-      margin: 0 40px;
-    }
-
-    .content-wrapper > :last-child {
-      margin-bottom: 40px;
-    }
-
-    .content {
-      height: calc(100vh - 80px);
-      width: 100%;
-      margin-top: 40px;
-      position: relative;
-      background-size: cover;
-      background-position: center;
-    }
-
-    .meta-wrapper {
-      display: flex;
-      flex-direction: column;
-      position: absolute;
-      bottom: 40px;
-      left: 40px;
-      width: 450px;
-    }
-
-    .meta-gradient {
-      height: 100%;
-      width: 100%;
-      background: linear-gradient(
-        180deg,
-        #00000000 0%,
-        #000000cc 90%,
-        #000000 100%
-      );
-    }
-
-    .meta-title {
-      display: block;
-      height: 170px;
-      width: 100%;
-      margin-bottom: 15px;
-      background-size: contain;
-      background-position: left bottom;
-      background-repeat: no-repeat;
-    }
-
-    .meta-title-text {
-      font-size: 50px;
-      font-family: 'Roboto', sans-serif;
-      font-weight: 700;
-      max-width: 400px;
-      color: #ffffff;
-      margin-bottom: 15px;
-    }
-
-    .meta-tagline {
-      font-size: 16px;
-      font-weight: 400;
-      color: #ffffff;
-      margin: 0;
-      margin-bottom: 15px;
-    }
-
-    .meta-button-wrapper {
-      display: flex;
-      flex-direction: row;
-      margin-bottom: 15px;
-    }
-
-    .meta-button-wrapper > :not(:last-of-type) {
-      margin-right: 25px;
-    }
-
-    .meta-button {
-      font-size: 15px;
-      font-weight: 600;
-      color: #ffffff;
-      background-color: #00000059;
-      width: 45%;
-      padding: 15px 0;
-      text-align: center;
-      text-decoration: none;
-    }
-
-    .meta-button:hover {
-      cursor: pointer;
-    }
-
-    /* Optional minor spacing for sections below hero */
-    .section {
-      margin-top: 24px;
-      color: #fff;
-    }
-    .section h1, .section h2 {
-      color: #fff;
-    }
-  </style>
-</head>
-<body>
+@section('body')
   <nav class="navbar">
     <div class="navbar-wrapper">
       <div class="navbar-link-wrapper">
@@ -173,19 +17,19 @@
         <span>logo here</span>
       </div>
       <div class="navbar-link-wrapper">
-        <a href="login.html">login</a>
+        <a href="/login.html">login</a>
       </div>
     </div>
   </nav>
 
   <main class="content-wrapper">
     <!-- HERO / FEATURED -->
-    <div class="content" style="background-image: url('./dune.jpg')">
+    <div class="content" style="background-image: url('/img/dune.jpg')">
       <div class="meta-gradient">
         <div class="meta-wrapper">
           <div
             class="meta-title"
-            style="background-image: url('./dune_logo.png')"
+            style="background-image: url('/img/dune_logo.png')"
           ></div>
           <p class="meta-tagline">
             Feature adaptation of the novel about the son of a noble family
@@ -198,15 +42,13 @@
       </div>
     </div>
 
-  
     <h2 style="text-align: center; margin: 50px 0;"> Top 10 Movies </h2>
-    <iframe src="topten_slider.html" width="100%" height="600" style="border:none;"></iframe>
-
+    <iframe src="/topten_slider.html" width="100%" height="600" style="border:none;"></iframe>
 
     <!-- BROWSE GRID -->
     <section class="section" aria-labelledby="browse-title">
       <div id="pageHeader">
-        <a href="./index.html">Home</a>
+        <a href="/index.html">Home</a>
         <h1 id="browse-title" style="text-align: center;">Browse</h1>
       </div>
 
@@ -343,7 +185,8 @@
       </div>
     </section>
   </main>
+@endsection
 
-  <script src="script.js" defer></script>
-</body>
-</html>
+@push('scripts')
+  <script src="/js/script.js" defer></script>
+@endpush
