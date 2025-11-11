@@ -1,44 +1,39 @@
+version: "3.9"
+
 services:
   app:
-  # Laravel backend
-    # Dockerfile dir
-    build: .
-    # mounts local TenFlix folder into ...
-    volumes:
-      - ./TenFlix:/var/www/html
-    # ensured db starts before app
-      - tenflix_vendor:/var/www/html/vendor
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tenflix-app
     depends_on:
       - db
-
-  web:
-    image: nginx:alpine
     ports:
-      - "8080:80"
-    # mounts the laravel project & config into the Nginx container 
+      - "8080:8000"
+    environment:
+      APP_ENV: local
+      APP_URL: http://localhost:8080
+      DB_CONNECTION: pgsql
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_DATABASE: movieweb
+      DB_USERNAME: movieweb
+      DB_PASSWORD: secret
     volumes:
-      - ./TenFlix:/var/www/html:ro
-      - ./nginx.conf:/etc/nginx/conf.d:ro
-    #ensure apps starts before web  
-    depends_on:
-      - app
-
+      - ./TenFlix:/var/www/html
 
   db:
-    image: postgres:16-alpine
-    # initliatises new db & env variables and must match .env file
+    image: postgres:16
+    container_name: tenflix-postgres
+    restart: unless-stopped
     environment:
       POSTGRES_DB: movieweb
       POSTGRES_USER: movieweb
       POSTGRES_PASSWORD: secret
-    # exposes port to connect from outside Docker 
-    # optional, keep if want to use DMT's such as pgAdmin
     ports:
       - "5432:5432"
-    # mounts it to a Docker Local volume to keep DB persistent
     volumes:
       - dbdata:/var/lib/postgresql/data
 
-# Named volume declaration
 volumes:
   dbdata:

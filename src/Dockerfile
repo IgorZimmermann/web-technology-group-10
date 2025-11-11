@@ -1,16 +1,17 @@
-FROM php:8.3-fpm-alpine
+FROM php:8.2-cli
 
-# adds important alpine packages such as git, curl, PostgreSQL PHP
-
-RUN apk add --no-cache git curl libpq-dev && docker-php-ext-install pdo pdo_pgsql
-
-# downloads composer and puts it in /usr/local/bin/composer
-
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN apt-get update \
+    && apt-get install -y libpq-dev \
+    && docker-php-ext-install pdo_pgsql \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /var/www/html
 
-COPY . .
+COPY TenFlix/ /var/www/html
 
-# Connects to Nginx on port 9000
-CMD ["php-fpm"]
+RUN if [ ! -f .env ]; then cp .env.example .env; fi \
+    && php artisan key:generate --ansi
+
+EXPOSE 8000
+
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
