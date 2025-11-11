@@ -5,7 +5,7 @@ RUN apt-get update && apt-get install -y git zip unzip curl libpq-dev \
 
 WORKDIR /var/www/html
 
-COPY desk_app /var/www/html
+COPY TenFlix /var/www/html
 
 RUN docker-php-ext-install pdo_pgsql \
  && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
