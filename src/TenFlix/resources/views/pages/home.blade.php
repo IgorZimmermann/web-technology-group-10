@@ -12,6 +12,7 @@
     <div class="navbar-wrapper">
       <div class="navbar-link-wrapper">
         <a href="">home</a>
+        <a href="/admin.html">admin</a>
       </div>
       <div>
         <span>logo here</span>
