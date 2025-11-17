@@ -130,16 +130,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   function updateDB() {
-    // In a real app, this would be a POST request to a server.
-    // Here we just log it. A real implementation would need a backend
-    // to write to the db.json file, which is not possible from client-side JS.
-    console.log("Updating DB (simulated):", {
-      top_ten: topTen,
-      movies: movies,
-    });
-    alert(
-      "Database changes are logged to the console. A backend is needed to persist these changes."
-    );
   }
 
   fetchData();
