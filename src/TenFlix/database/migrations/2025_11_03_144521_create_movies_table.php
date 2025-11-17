@@ -8,12 +8,14 @@ return new class extends Migration {
     public function up(): void {
         Schema::create('movies', function (Blueprint $table) {
             $table->id();
+            $table->integer('tmdb_id')->unique();
             $table->string('title');
             $table->text('overview')->nullable();
-            $table->string('poster_url')->nullable();
-            $table->string('genre')->nullable();
+            $table->string('poster_path')->nullable();
+           // $table->string('genre')->nullable();
             $table->date('release_date')->nullable();
-            $table->decimal('rating',3,1)->nullable();
+            $table->decimal('vote_average', 3, 1)->nullable();
+            $table->integer('vote_count')->nullable();
             $table->timestamps();
         });
     }
