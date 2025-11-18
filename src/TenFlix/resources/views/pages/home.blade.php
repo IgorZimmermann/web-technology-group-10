@@ -47,11 +47,11 @@
             @foreach($movies as $movie)
             <div class="movie-card" data-title="{{ $movie->title }}">
                 <img src="https://image.tmdb.org/t/p/original{{ $movie->poster_path }}" alt="{{ $movie->title }} poster">
-                <span class="heart" aria-label="Add {{ $movie->title }} to watchlist">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-                    <path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"
-                    d="M11.648 3.159c1.89-1.848 4.953-1.848 6.843 0 1.89 1.847 1.89 4.84 0 6.688l-7.07 6.908a.75.75 0 0 1-1.042 0l-7.07-6.908c-1.89-1.848-1.89-4.84 0-6.688 1.89-1.848 4.953-1.848 6.843 0l.748.731.748-.731z"/>
-                </svg>
+                <span class="heart watchlist-button" aria-label="Add {{ $movie->title }} to watchlist" data-id="{{ $movie->tmdb_id }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+                        <path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"
+                        d="M11.648 3.159c1.89-1.848 4.953-1.848 6.843 0 1.89 1.847 1.89 4.84 0 6.688l-7.07 6.908a.75.75 0 0 1-1.042 0l-7.07-6.908c-1.89-1.848-1.89-4.84 0-6.688 1.89-1.848 4.953-1.848 6.843 0l.748.731.748-.731z"/>
+                    </svg>
                 </span>
             </div>
             @endforeach
@@ -62,12 +62,22 @@
         <section class="section" aria-labelledby="watchlist-title">
         <h1 id="watchlist-title">Watchlist</h1>
         <div id="watchList">
-            <p id="emptyMsg">No movies yet</p>
+            @foreach($watchlisted as $movie)
+            <div class="movie-card" data-title="{{ $movie->title }}">
+                <img src="https://image.tmdb.org/t/p/original{{ $movie->poster_path }}" alt="{{ $movie->title }} poster">
+                <span class="heart watchlist-button" aria-label="Add {{ $movie->title }} to watchlist" data-id="{{ $movie->tmdb_id }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+                        <path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"
+                        d="M11.648 3.159c1.89-1.848 4.953-1.848 6.843 0 1.89 1.847 1.89 4.84 0 6.688l-7.07 6.908a.75.75 0 0 1-1.042 0l-7.07-6.908c-1.89-1.848-1.89-4.84 0-6.688 1.89-1.848 4.953-1.848 6.843 0l.748.731.748-.731z"/>
+                    </svg>
+                </span>
+            </div>
+            @endforeach
         </div>
         </section>
   </main>
 @endsection
 
 @push('scripts')
-    <script src="/js/script.js" defer></script>
+    <script src="/js/watchlist.js" defer></script>
 @endpush
