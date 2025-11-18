@@ -11,7 +11,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // Load data from server-rendered movies
   function fetchData() {
     try {
-      // Get movies from the window object (passed from Blade template)
       movies = window.moviesData || [];
       
       // Get top ten movies from server (ordered by vote_count desc)
@@ -150,7 +149,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   function saveTopTen() {
-    // Save to localStorage as a temporary solution
     localStorage.setItem('topTenMovies', JSON.stringify(topTen));
   }
 

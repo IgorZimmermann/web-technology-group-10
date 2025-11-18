@@ -50,7 +50,6 @@
 
 @push('scripts')
     <script>
-        // Pass movies data from Laravel to JavaScript
         window.moviesData = @json($movies);
         window.topTenMoviesData = @json($topTenMovies);
     </script>
