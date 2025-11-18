@@ -4,7 +4,7 @@
 
 ## Users and roles
 ### User
-- Email: test@example.com
+- Email: user@example.com
 - Password: user1234
 ### Admin
 - Email: admin@example.com
