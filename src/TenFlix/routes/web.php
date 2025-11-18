@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\SignupController;
+use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Movie;
 
@@ -19,3 +21,14 @@ Route::get('/topten_slider.html', function () {
 	$movies = App\Models\Movie::orderBy('vote_count', 'desc')->take(10)->get();
 	return view('pages.topten_slider', ['movies' => $movies]);
 });
+
+Route::get('/signup', function () {
+    return view('pages.signup');
+});
+Route::post('/signup', [SignupController::class, 'signup']);
+
+Route::get('login', function () {
+    return view('pages.login');
+});
+Route::post('/login', [LoginController::class, 'login']);
+Route::post('/logout', [LoginController::class, 'logout']);
