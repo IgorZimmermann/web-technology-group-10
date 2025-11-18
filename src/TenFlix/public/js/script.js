@@ -20,6 +20,7 @@ document.querySelectorAll('.heart').forEach(heart => {
       //Clones it in the script called clone
       const clone = card.cloneNode(true);
       clone.querySelector('.heart').remove();
+      clone.classList.remove('menu-item'); // enforce watchlist card sizing
       // Appends to watch list
       watchList.appendChild(clone);
     }
