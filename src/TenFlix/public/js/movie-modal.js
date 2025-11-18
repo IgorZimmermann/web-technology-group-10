@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const titleEl = modal.querySelector('[data-modal-title]');
   const posterEl = modal.querySelector('[data-modal-poster]');
   const releaseEl = modal.querySelector('[data-modal-release]');
+  const genreEl = modal.querySelector('[data-modal-genre]');
   const ratingEl = modal.querySelector('[data-modal-rating]');
   const votesEl = modal.querySelector('[data-modal-votes]');
   const overviewEl = modal.querySelector('[data-modal-overview]');
@@ -32,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // helper method to populate the Modal Box
   const populateModal = (data = {}) => {
-    const { title, overview, releaseDate, rating, voteCount, poster } = data;
+    const { title, overview, releaseDate, rating, voteCount, poster, genre } = data;
     titleEl.textContent = title || 'Untitled';
 
     posterEl.src = poster;
@@ -40,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
     posterEl.style.display = 'block';
 
     releaseEl.textContent = releaseDate ? `Released: ${releaseDate}` : 'Release date unavailable';
+    genreEl.textContent = genre ? `Genres: ${genre}` : 'Genres unavailable';
     ratingEl.textContent = rating ? `Rating: ${Number(rating).toFixed(1)}/10` : 'Rating unavailable';
     votesEl.textContent = voteCount ? `Votes: ${Number(voteCount).toLocaleString()}` : 'Votes unavailable';
     overviewEl.textContent = overview || 'No overview available.';

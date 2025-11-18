@@ -56,6 +56,7 @@
             data-release-date="{{ $movie->release_date }}"
             data-rating="{{ $movie->vote_average }}"
             data-vote-count="{{ $movie->vote_count }}"
+            data-genre="{{ e($movie->genre) }}"
             data-poster="{{ $movie->poster_path ? 'https://image.tmdb.org/t/p/original'.$movie->poster_path : '' }}"
           >
             <img src="https://image.tmdb.org/t/p/original{{ $movie->poster_path }}" alt="{{ $movie->title }} - #{{ $loop->iteration }}">
@@ -88,6 +89,7 @@
             data-release-date="{{ $movie->release_date }}"
             data-rating="{{ $movie->vote_average }}"
             data-vote-count="{{ $movie->vote_count }}"
+            data-genre="{{ e($movie->genre) }}"
             data-poster="{{ $movie->poster_path ? 'https://image.tmdb.org/t/p/original'.$movie->poster_path : '' }}"
           >
               <img src="https://image.tmdb.org/t/p/original{{ $movie->poster_path }}" alt="{{ $movie->title }} poster">
