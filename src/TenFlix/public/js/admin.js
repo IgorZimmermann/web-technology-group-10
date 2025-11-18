@@ -14,13 +14,9 @@ document.addEventListener("DOMContentLoaded", () => {
       // Get movies from the window object (passed from Blade template)
       movies = window.moviesData || [];
       
-      // Initialize topTen as empty or load from localStorage as a temporary solution
-      // You can later implement a proper backend storage for top ten
-      const storedTopTen = localStorage.getItem('topTenMovies');
-      topTen = storedTopTen ? JSON.parse(storedTopTen) : [];
-      
-      // Filter out any IDs that don't exist in current movies
-      topTen = topTen.filter(id => movies.some(m => m.id === id));
+      // Get top ten movies from server (ordered by vote_count desc)
+      const topTenMovies = window.topTenMoviesData || [];
+      topTen = topTenMovies.map(movie => movie.id);
       
       renderTopTen();
       renderAllMovies();

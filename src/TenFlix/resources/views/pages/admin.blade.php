@@ -52,6 +52,7 @@
     <script>
         // Pass movies data from Laravel to JavaScript
         window.moviesData = @json($movies);
+        window.topTenMoviesData = @json($topTenMovies);
     </script>
     <script src="{{ asset('js/admin.js') }}"></script>
 @endpush
