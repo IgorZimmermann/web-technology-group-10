@@ -8,37 +8,6 @@
 @endpush
 
 @section('body')
-  <nav class="navbar">
-    <div class="navbar-wrapper">
-      <div class="navbar-link-wrapper">
-        <a href="">home</a>
-        <a href="/admin.html">admin</a>
-      </div>
-      <div>
-        <span>logo here</span>
-      </div>
-      <div class="navbar-link-wrapper">
-        <a href="/login.html">login</a>
-      </div>
-    </div>
-  </nav>
-
-  <main class="content-wrapper">
-    <!-- HERO / FEATURED -->
-    <div class="content" style="background-image: url('/img/dune.jpg')">
-      <div class="meta-gradient">
-        <div class="meta-wrapper">
-          <div
-            class="meta-title"
-            style="background-image: url('/img/dune_logo.png')"
-          ></div>
-          <p class="meta-tagline">
-            Feature adaptation of the novel about the son of a noble family
-            entrusted with the protection of the most valuable.
-          </p>
-          <div class="meta-button-wrapper">
-            <a class="meta-button">Add to Watchlist</a>
-          </div>
     <nav class="navbar">
         <div class="navbar-wrapper">
             <div class="navbar-link-wrapper">
