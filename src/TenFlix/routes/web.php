@@ -8,7 +8,7 @@ use App\Models\Movie;
 Route::get('/', function () {
     $movies = Movie::all();
     return view('pages.home', ['movies' => $movies]);
-});
+})->name('home');
 
 Route::get('/index.html', function () {
     $movies = Movie::all();
@@ -32,3 +32,5 @@ Route::get('login', function () {
 });
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout']);
+
+Route::view('/admin.html', 'pages.admin');
