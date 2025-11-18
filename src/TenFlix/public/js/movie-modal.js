@@ -1,11 +1,5 @@
 // runs this code afte rthe 
 document.addEventListener('DOMContentLoaded', () => {
-  // checks if its embedded (in an iframe like top10)
-  const isEmbedded = window.self !== window.top;
-  // has their own script in topten.js
-  if (isEmbedded) return;
-
-
   const modal = document.getElementById('movieModal');
   if (!modal) return;
 
@@ -19,12 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const watchlistBtn = modal.querySelector('[data-modal-watchlist]');
 
   let activeCard = null;
-
-  // helper to find card in DOM by tmbdId
-  const findCardById = (tmdbId) => {
-    if (!tmdbId) return null;
-    return document.querySelector(`.movie-card[data-tmdb-id="${tmdbId}"]`);
-  };
 
   // get the heart of the activeCard
   const getSourceHeart = () => activeCard?.querySelector('.heart') || null;
@@ -79,13 +67,6 @@ document.addEventListener('DOMContentLoaded', () => {
     showModal();
   };
 
-  // set active card based on the PayLoad (from topten.js)
-  const openModalFromPayload = (payload = {}) => {
-    activeCard = findCardById(payload.tmdbId) || null;
-    populateModal(payload);
-    showModal();
-  };
-
   // create an event listener for close button
   modal.querySelectorAll('[data-modal-close]').forEach((trigger) => {
     trigger.addEventListener('click', closeModal);
@@ -111,10 +92,4 @@ document.addEventListener('DOMContentLoaded', () => {
     openModalFromCard(card);
   });
 
-  // adds an event listener for the top 10 iframe 
-  window.addEventListener('message', (event) => {
-    if (event.origin && event.origin !== window.location.origin) return;
-    if (!event.data || event.data.type !== 'movie-modal:open') return;
-    openModalFromPayload(event.data.payload || {});
-  });
 });
