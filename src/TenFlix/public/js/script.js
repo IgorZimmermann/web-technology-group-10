@@ -4,6 +4,7 @@ const emptyMsg = document.getElementById('emptyMsg');
 // gets all the hear and loops over each one of them in an array
 document.querySelectorAll('.heart').forEach(heart => {
   heart.addEventListener('click', e => {
+    e.stopPropagation();
     const card = heart.closest('.movie-card');
     const title = card.getAttribute('data-title');
 

@@ -54,7 +54,17 @@
 
       <div class="movie-grid">
         @foreach($movies as $movie)
-          <div class="movie-card" data-title="{{ $movie->title }}">
+          <div
+            class="movie-card"
+            {{-- data elements are stored to be able to use for js for the modal box / pop up --}}
+            data-tmdb-id="{{ $movie->tmdb_id }}"
+            data-title="{{ $movie->title }}"
+            data-overview="{{ e($movie->overview) }}"
+            data-release-date="{{ $movie->release_date }}"
+            data-rating="{{ $movie->vote_average }}"
+            data-vote-count="{{ $movie->vote_count }}"
+            data-poster="{{ $movie->poster_path ? 'https://image.tmdb.org/t/p/original'.$movie->poster_path : '' }}"
+          >
               <img src="https://image.tmdb.org/t/p/original{{ $movie->poster_path }}" alt="{{ $movie->title }} poster">
             <span class="heart" aria-label="Add {{ $movie->title }} to watchlist">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
@@ -79,4 +89,5 @@
 
 @push('scripts')
   <script src="/js/script.js" defer></script>
+  <script src="/js/movie-modal.js" defer></script>
 @endpush
