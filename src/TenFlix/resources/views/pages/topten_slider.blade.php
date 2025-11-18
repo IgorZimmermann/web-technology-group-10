@@ -3,44 +3,19 @@
 @section('title','Top 10 Movies')
 
 @push('styles')
-  <link rel="stylesheet" href="/css/topten.css">
+    <link rel="stylesheet" href="/css/topten.css">
 @endpush
 
 @section('body')
-  <div class="menu">
-    <div class="menu-item">
-      <img src="https://www.movieposters.com/cdn/shop/files/shawshank_eb84716b-efa9-44dc-a19d-c17924a3f7df.jpg?v=1709821984&width=1200" alt="The Shawshank Redemption - #1">
-    </div>
-    <div class="menu-item">
-      <img src="https://www.movieposters.com/cdn/shop/products/b5282f72126e4919911509e034a61f66_6ce2486d-e0da-4b7a-9148-722cdde610b8.jpg?v=1573616025&width=1200" alt="The Godfather - #2">
-    </div>
-    <div class="menu-item">
-      <img src="https://www.movieposters.com/cdn/shop/files/darkknight.building.24x36_20e90057-f673-4cc3-9ce7-7b0d3eeb7d83.jpg?v=1707491191&width=1200" alt="The Dark Knight - #3">
-    </div>
-    <div class="menu-item">
-      <img src="https://www.movieposters.com/cdn/shop/files/godfather2.mpw.120726.jpg?v=1707501188&width=1200" alt="The Godfather Part II - #4">
-    </div>
-    <div class="menu-item">
-      <img src="https://www.movieposters.com/cdn/shop/products/3a5bd5d26fb4e65a922508e7ce597d5e_2c03f332-fc4d-4df2-b6ac-61d577804ea8.jpg?v=1573592716&width=1200" alt="12 Angry Men - #5">
-    </div>
-    <div class="menu-item">
-      <img src="https://cdn.shopify.com/s/files/1/0057/3728/3618/products/9a1f9ea4a27071481cc1263e3ea11f7b_7bdb2deb-dd50-41b5-beab-8fc1cb3c895d_500x749.jpg?v=1573651233" alt="Schindler's List - #6">
-    </div>
-    <div class="menu-item">
-      <img src="https://www.movieposters.com/cdn/shop/products/80393c756708cdd1df9250c23270ddfe_95ecd3a7-8515-4772-b830-2f3132eb7ad6.jpg?v=1573585494&width=1200" alt="The Lord of the Rings: The Return of the King - #7">
-    </div>
-    <div class="menu-item">
-      <img src="https://www.movieposters.com/cdn/shop/files/PulpFiction.Ver1.jpg?v=1741192018&width=1200" alt="Pulp Fiction - #8">
-    </div>
-    <div class="menu-item">
-      <img src="https://www.movieposters.com/cdn/shop/files/ItemP2658_jpg.jpg?v=1692302023&width=1200" alt="The Lord of the Rings: The Return of the King - #9">
-    </div>
-    <div class="menu-item">
-      <img src="https://www.movieposters.com/cdn/shop/files/goodbadugly.mpw..jpg?v=1707501317&width=1680" alt="The Good, the Bad and the Ugly - #10">
-    </div>
-  </div>
+	<div class="menu">
+		@foreach($movies->take(10) as $movie)
+			<div class="menu-item">
+				<img src="https://image.tmdb.org/t/p/original{{ $movie->poster_path }}" alt="{{ $movie->title }} - #{{ $loop->iteration }}">
+			</div>
+		@endforeach
+	</div>
 @endsection
 
 @push('scripts')
-  <script src="/js/topten.js"></script>
+    <script src="/js/topten.js"></script>
 @endpush
