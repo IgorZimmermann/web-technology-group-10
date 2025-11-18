@@ -33,4 +33,8 @@ Route::get('login', function () {
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout']);
 
-Route::view('/admin.html', 'pages.admin');
+Route::get('/admin.html', function () {
+    $movies = Movie::all();
+    $topTenMovies = Movie::orderBy('vote_count', 'desc')->take(10)->get();
+    return view('pages.admin', ['movies' => $movies, 'topTenMovies' => $topTenMovies]);
+});
