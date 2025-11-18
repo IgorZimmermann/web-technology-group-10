@@ -4,8 +4,9 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 70vh;
+  min-height: 100vh;
   background: #1f1f1f;
+  padding: 20px;
 }
 
 .home-button{
@@ -28,24 +29,21 @@ body {
   white-space: nowrap;
   scroll-behavior: smooth;
   max-width: 90vw;
+  align-items: center;
 }
 
 .menu::-webkit-scrollbar { display: none; }
 .menu { -ms-overflow-style: none; scrollbar-width: none; }
 
 .menu-item {
-  flex-shrink: 0;
-  width: 280px;
-  height: 320px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 48px;
-  color: white;
-  font-family: Arial, sans-serif;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease;
+  position: relative;
+  flex: 0 0 auto;
+  width: 20rem;
+  aspect-ratio: 2/3;
+  overflow: hidden;
   cursor: pointer;
+  margin: 0;
+  border-radius: 0.7rem;
 }
 
 .menu-item:hover { transform: translateY(-5px); }
