@@ -33,4 +33,7 @@ Route::get('login', function () {
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout']);
 
-Route::view('/admin.html', 'pages.admin');
+Route::get('/admin.html', function () {
+    $movies = Movie::all();
+    return view('pages.admin', ['movies' => $movies]);
+});

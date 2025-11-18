@@ -49,5 +49,9 @@
 @endsection
 
 @push('scripts')
+    <script>
+        // Pass movies data from Laravel to JavaScript
+        window.moviesData = @json($movies);
+    </script>
     <script src="{{ asset('js/admin.js') }}"></script>
 @endpush
