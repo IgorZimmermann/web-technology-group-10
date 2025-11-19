@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
     renderTopTen();
-    saveTopTen();
+    saveTopTenToDatabase();
   };
 
   window.moveTopTen = function (index, direction) {
@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const [item] = topTen.splice(index, 1);
     topTen.splice(index + direction, 0, item);
     renderTopTen();
-    saveTopTen();
+    saveTopTenToDatabase();
   };
 
   window.removeMovie = function (movieId) {
@@ -117,7 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
       topTen = topTen.filter((id) => id !== movieId);
       renderAllMovies();
       renderTopTen();
-      saveTopTen();
+      saveTopTenToDatabase();
       alert('Note: This only removes the movie from this session. Refresh the page to see all movies again.');
     }
   };
@@ -147,6 +147,31 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("Please provide a unique title and a poster URL.");
     }
   });
+
+  async function saveTopTenToDatabase() {
+    try {
+      const response = await fetch('/api/top-ten', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+        },
+        body: JSON.stringify({ movieIds: topTen })
+      });
+      
+      const data = await response.json();
+      
+      if (!data.success) {
+        console.error('Failed to save top 10:', data.message);
+        alert('Failed to save changes: ' + data.message);
+      } else {
+        console.log('Top 10 saved successfully');
+      }
+    } catch (error) {
+      console.error('Error saving top 10:', error);
+      alert('Error saving changes. Please try again.');
+    }
+  }
 
   function saveTopTen() {
     localStorage.setItem('topTenMovies', JSON.stringify(topTen));

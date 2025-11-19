@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\SignupController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\TopTenController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Movie;
@@ -9,7 +10,7 @@ use App\Models\Movie;
 Route::get('/', function () {
     $movies = Movie::all();
     $bannerMovie = Movie::orderBy('vote_count', 'desc')->first();
-    $topMovies = Movie::orderBy('vote_count', 'desc')->take(10)->get();
+    $topMovies = Movie::getTopTen();
     $actionMovies = Movie::where('genre', 'like', '%Action%')
         ->orderBy('vote_count', 'desc')
         ->take(12)
@@ -42,7 +43,7 @@ Route::get('/admin', function () {
     }
 
     $movies = Movie::all();
-    $topTenMovies = Movie::orderBy('vote_count', 'desc')->take(10)->get();
+    $topTenMovies = Movie::getTopTen();
 
     return view('pages.admin', [
         'movies' => $movies,
@@ -65,6 +66,10 @@ Route::post('/logout', [LoginController::class, 'logout']);
 
 Route::get('/admin.html', function () {
     $movies = Movie::all();
-    $topTenMovies = Movie::orderBy('vote_count', 'desc')->take(10)->get();
+    $topTenMovies = Movie::getTopTen();
     return view('pages.admin', ['movies' => $movies, 'topTenMovies' => $topTenMovies]);
 });
+
+Route::get('/api/top-ten', [TopTenController::class, 'index']);
+Route::post('/api/top-ten', [TopTenController::class, 'update']);
+Route::post('/api/top-ten/reset', [TopTenController::class, 'reset']);
