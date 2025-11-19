@@ -32,7 +32,8 @@ body {
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  width: 40%;
+  width: auto; 
+  gap: 10px;
 }
 
 .navbar-link-wrapper:last-child { justify-content: flex-end; }
@@ -43,7 +44,10 @@ body {
   color: #fff;
   text-transform: capitalize;
   text-decoration: none;
+  white-space: nowrap;
 }
+
+.navbar-link-wrapper > span { color: #ffffff; }
 
 .content-wrapper {
   display: flex;

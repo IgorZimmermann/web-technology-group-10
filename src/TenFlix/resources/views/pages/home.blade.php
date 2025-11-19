@@ -1,6 +1,6 @@
 @extends('layouts.base')
 
-@section('title','TenFlix')
+@section('title', 'TenFlix')
 
 @push('styles')
   <link rel="stylesheet" href="/css/home.css">
@@ -9,39 +9,30 @@
 @endpush
 
 @section('body')
-  <nav class="navbar">
-    <div class="navbar-wrapper">
-      <div class="navbar-link-wrapper">
-        <a href="">home</a>
-      </div>
-      <div>
-        <span>logo here</span>
-      </div>
-      <div class="navbar-link-wrapper">
-        <a href="/login.html">login</a>
-      </div>
-    </div>
-  </nav>
-
-  <main class="content-wrapper">
-    <!-- HERO / FEATURED -->
-    <div class="content" style="background-image: url('/img/dune.jpg')">
-      <div class="meta-gradient">
-        <div class="meta-wrapper">
-          <div
-            class="meta-title"
-            style="background-image: url('/img/dune_logo.png')"
-          ></div>
-          <p class="meta-tagline">
-            Feature adaptation of the novel about the son of a noble family
-            entrusted with the protection of the most valuable.
-          </p>
-          <div class="meta-button-wrapper">
-            <a class="meta-button">Add to Watchlist</a>
-          </div>
+    <nav class="navbar">
+        <div class="navbar-wrapper">
+            <div class="navbar-link-wrapper">
+                <a href="">home</a>
+            </div>
+            <div>
+                <span>logo here</span>
+            </div>
+            <div class="navbar-link-wrapper">
+                @auth{{--  todo: implement a better logout --}}
+                    <span>{{ Auth::user()->name }}</span>
+                    <form method="POST" action="/logout"  style="display: inline;">
+                        @csrf
+                        <button type="submit"
+                            style="background: none; border: none; color: inherit; cursor: pointer; text-decoration: underline;">Logout</button>
+                    </form>
+                @else
+                    <a href="/login">login</a>
+                @endauth
+            </div>
         </div>
-      </div>
-    </div>
+    </nav>
+    <main class="content-wrapper">
+        <div class="content"></div>
 
     <section class="section" aria-labelledby="top-ten-title">
       <h2 id="top-ten-title" style="text-align: center; margin: 50px 0;">Top 10 Movies</h2>
@@ -70,12 +61,12 @@
       </div>
     </section>
 
-    <!-- BROWSE GRID -->
-    <section class="section" aria-labelledby="browse-title">
-      <div id="pageHeader">
-        <a href="/index.html">Home</a>
-        <h1 id="browse-title" style="text-align: center;">Browse</h1>
-      </div>
+        <!-- BROWSE GRID -->
+        <section class="section" aria-labelledby="browse-title">
+        <div id="pageHeader">
+            <a href="/index.html">Home</a>
+            <h1 id="browse-title" style="text-align: center;">Browse</h1>
+        </div>
 
       <div class="movie-grid">
         @foreach($movies as $movie)
@@ -102,13 +93,13 @@
       </div>
     </section>
 
-    <!-- WATCHLIST SECTION -->
-    <section class="section" aria-labelledby="watchlist-title">
-      <h1 id="watchlist-title">Watchlist</h1>
-      <div id="watchList">
-        <p id="emptyMsg">No movies yet</p>
-      </div>
-    </section>
+        <!-- WATCHLIST SECTION -->
+        <section class="section" aria-labelledby="watchlist-title">
+        <h1 id="watchlist-title">Watchlist</h1>
+        <div id="watchList">
+            <p id="emptyMsg">No movies yet</p>
+        </div>
+        </section>
   </main>
 @endsection
 
