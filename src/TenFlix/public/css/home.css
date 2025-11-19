@@ -32,7 +32,7 @@ body {
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  width: auto; 
+  width: auto;
   gap: 10px;
 }
 
@@ -48,6 +48,12 @@ body {
 }
 
 .navbar-link-wrapper > span { color: #ffffff; }
+
+.logo{
+    height: 5rem;
+    width: auto;
+    vertical-align: middle;
+}
 
 .content-wrapper {
   display: flex;
@@ -131,4 +137,3 @@ body {
 
 .section { margin-top: 24px; color: #fff; }
 .section h1, .section h2 { color: #fff; }
-    

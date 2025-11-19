@@ -14,7 +14,7 @@
                 <a href="">home</a>
             </div>
             <div>
-                <span>logo here</span>
+                <img src="/img/logo.png" class="logo">
             </div>
             <div class="navbar-link-wrapper">
                 @auth{{--  todo: implement a better logout --}}
