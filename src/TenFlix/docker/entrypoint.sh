@@ -8,13 +8,13 @@ run_artisan () {
   php artisan "$@"
 }
 
+if [ ! -f vendor/autoload.php ]; then
+  composer install --prefer-dist --no-progress --no-interaction
+fi
+
 if [ ! -f .env ]; then
   cp .env.example .env
   run_artisan key:generate --ansi
-fi
-
-if [ ! -f vendor/autoload.php ]; then
-  composer install --prefer-dist --no-progress --no-interaction
 fi
 
 if [ "${SKIP_DB_WAIT:-0}" != "1" ]; then
