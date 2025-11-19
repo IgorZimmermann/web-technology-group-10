@@ -70,6 +70,12 @@ body {
     white-space: nowrap;
 }
 
+.logo{
+    height: 5rem;
+    width: auto;
+    vertical-align: middle;
+}
+
 .content-wrapper {
     display: flex;
     flex-direction: column;

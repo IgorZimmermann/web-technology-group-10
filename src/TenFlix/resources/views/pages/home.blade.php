@@ -20,7 +20,7 @@
                 @endauth
             </div>
             <div>
-                <span>logo here</span>
+                <img src="/img/logo.png" class="logo">
             </div>
             <div class="navbar-link-wrapper">
                 @auth
