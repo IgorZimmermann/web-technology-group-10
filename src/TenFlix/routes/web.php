@@ -5,14 +5,19 @@ use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Movie;
 
-Route::get('/', function () {
-    $movies = Movie::all();
-    return view('pages.home', ['movies' => $movies]);
-})->name('home');
+// home at both "/" and "/index.html"
+Route::view('/', 'pages.home')->name('home');
+Route::view('/index.html', 'pages.home');
 
-Route::get('/index.html', function () {
-    $movies = Movie::all();
-    return view('pages.home', ['movies' => $movies]);
+
+Route::get('/admin', function()
+    {
+    if (Auth::user()->is_admin==true) {
+        return view('pages.admin');
+    }
+    else {
+        return redirect('/');
+    }
 });
 
 Route::view('/login.html', 'pages.login');
