@@ -14,11 +14,5 @@
 ## Commands
 
 ```bash
-php artisan tmdb:fetch-movies 5
+docker compose up --build
 ```
-used to fill up the movies table with the data from "The Movie Database" API
-
-```bash
-php artisan movies:show 5
-```
-used to show the contents of the movies table, in a more organized way, for checking
