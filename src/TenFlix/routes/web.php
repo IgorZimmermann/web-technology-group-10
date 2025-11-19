@@ -12,6 +12,7 @@ Route::get('/', function () {
         'movies' => $movies,
         'topMovies' => $topMovies,
     ]);
+});
 
 // home at both "/" and "/index.html"
 Route::view('/', 'pages.home')->name('home');
