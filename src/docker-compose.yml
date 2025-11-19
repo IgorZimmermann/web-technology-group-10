@@ -4,15 +4,11 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: tenflix-app
+    depends_on:
+      db:
+        condition: service_healthy
     ports:
       - "8080:8000"
-    # for volumes to work do the following 
-    # composer install (form TenFlix)
-    # make sure to have the .env file as .env.example
-    # php artisan key:generate
-    # if its slow or you would like to remove it just comment out the volumes section
-    volumes:
-      - ./TenFlix:/var/www/html:rw,cached
     environment:
       APP_ENV: local
       APP_URL: http://localhost:8080
@@ -22,6 +18,7 @@ services:
       DB_DATABASE: movieweb
       DB_USERNAME: movieweb
       DB_PASSWORD: secret
+      RUN_TMDB_FETCH: "1"
 
 
   db:
@@ -36,6 +33,11 @@ services:
       - "5432:5432"
     volumes:
       - dbdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U movieweb -d movieweb"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
 
 volumes:
   dbdata:

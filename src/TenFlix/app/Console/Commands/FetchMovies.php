@@ -16,6 +16,7 @@ class FetchMovies extends Command
         $pages = $this->argument('pages');
         $apiKey = config('services.tmdb.key');
         $baseUrl = config('services.tmdb.base_url');
+        $genreMap = $this->fetchGenreMap($baseUrl, $apiKey);
 
         $this->info("Fetching {$pages} pages of movies...");
 
@@ -35,7 +36,7 @@ class FetchMovies extends Command
                             'title' => $movieData['title'],
                             'overview' => $movieData['overview'],
                             'release_date' => $movieData['release_date'] ?? null,
-                            //'genre' => $movieData['genere'],
+                            'genre' => $this->formatGenres($movieData['genre_ids'] ?? [], $genreMap),
                             'poster_path' => $movieData['poster_path'],
                             'vote_average' => $movieData['vote_average'],
                             'vote_count' => $movieData['vote_count'],
@@ -52,5 +53,41 @@ class FetchMovies extends Command
         }
 
         $this->info('Import completed!');
+    }
+
+    // Fetch the TMDB genre list and convert id into a name map
+    private function fetchGenreMap(string $baseUrl, string $apiKey): array
+    {   
+        // fetch genre id list
+        $response = Http::get("{$baseUrl}/genre/movie/list", [
+            'api_key' => $apiKey,
+            'language' => 'en-US',
+        ]);
+
+        if (! $response->successful()) {
+            $this->warn('Unable to retrieve TMDB genres; continuing without genre labels.');
+            return [];
+        }
+        // creates a genre map based on the result 
+        return collect($response->json('genres', []))
+        ->pluck('name', 'id')   // [id => name]
+        ->toArray();
+
+        return $genreMap;
+    }
+
+    // for each genreIds in a genre map it returns the genre name
+    private function formatGenres(array $genreIds, array $genreMap): ?string
+    {
+        if (empty($genreIds) || empty($genreMap)) {
+            return null;
+        }
+
+        $names = collect($genreIds)
+        ->map(fn ($id) => $genreMap[$id] ?? null)  // lookup id in map
+        ->filter()                                  // remove nulls
+        ->all();
+
+        return empty($names) ? null : implode(', ', $names);
     }
 }

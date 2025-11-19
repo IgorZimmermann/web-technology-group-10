@@ -25,6 +25,7 @@
     <img data-modal-poster class="modal-poster" src="" alt="">
     <h2 data-modal-title class="modal-title"></h2>
       <p data-modal-release class="modal-meta"></p>
+      <p data-modal-genre class="modal-meta"></p>
       <p data-modal-rating class="modal-meta"></p>
       <p data-modal-votes class="modal-meta"></p>
       <p data-modal-overview class="modal-overview"></p>
