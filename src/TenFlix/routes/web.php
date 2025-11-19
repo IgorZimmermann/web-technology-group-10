@@ -27,11 +27,11 @@ Route::get('/', function () {
         'thrillerMovies' => $thrillerMovies,
         'crimeMovies' => $crimeMovies,
     ]);
-});
+})->name('home');
 
-// home at both "/" and "/index.html"
-Route::view('/', 'pages.home')->name('home');
-Route::view('/index.html', 'pages.home');
+Route::get('/index.html', function () {
+    return redirect()->route('home');
+});
 
 Route::get('/admin', function()
     {
