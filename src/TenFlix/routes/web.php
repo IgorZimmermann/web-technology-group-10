@@ -3,6 +3,7 @@
 use App\Http\Controllers\SignupController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
+use App\Models\Movie;
 
 // home at both "/" and "/index.html"
 Route::view('/', 'pages.home')->name('home');
@@ -19,10 +20,12 @@ Route::get('/admin', function()
     }
 });
 
-// keep legacy filenames so your links/iframe work unchanged
 Route::view('/login.html', 'pages.login');
 Route::view('/signup.html', 'pages.signup');
-Route::view('/topten_slider.html', 'pages.topten_slider');
+Route::get('/topten_slider.html', function () {
+	$movies = App\Models\Movie::orderBy('vote_count', 'desc')->take(10)->get();
+	return view('pages.topten_slider', ['movies' => $movies]);
+});
 
 Route::get('/signup', function () {
     return view('pages.signup');
@@ -34,3 +37,9 @@ Route::get('login', function () {
 });
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout']);
+
+Route::get('/admin.html', function () {
+    $movies = Movie::all();
+    $topTenMovies = Movie::orderBy('vote_count', 'desc')->take(10)->get();
+    return view('pages.admin', ['movies' => $movies, 'topTenMovies' => $topTenMovies]);
+});
