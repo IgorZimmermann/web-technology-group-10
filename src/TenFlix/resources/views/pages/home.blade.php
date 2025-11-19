@@ -3,8 +3,9 @@
 @section('title', 'TenFlix')
 
 @push('styles')
-    <link rel="stylesheet" href="/css/home.css">
-    <link rel="stylesheet" href="/css/watchlist.css">
+  <link rel="stylesheet" href="/css/home.css">
+  <link rel="stylesheet" href="/css/watchlist.css">
+  <link rel="stylesheet" href="/css/topten.css">
 @endpush
 
 @section('body')
@@ -37,8 +38,32 @@
     <main class="content-wrapper">
         <div class="content"></div>
 
-        <h2 style="text-align: center; margin: 50px 0;"> Top 10 Movies </h2>
-        <iframe src="/topten_slider.html" width="100%" height="600" style="border:none;"></iframe>
+    <section class="section" aria-labelledby="top-ten-title">
+      <h2 id="top-ten-title" style="text-align: center; margin: 50px 0;">Top 10 Movies</h2>
+      <div class="menu">
+        @foreach($topMovies as $movie)
+          <div
+            class="menu-item movie-card"
+            {{-- data elements are stored to be able to use for js for the modal box / pop up --}}
+            data-tmdb-id="{{ $movie->tmdb_id }}"
+            data-title="{{ $movie->title }}"
+            data-overview="{{ e($movie->overview) }}"
+            data-release-date="{{ $movie->release_date }}"
+            data-rating="{{ $movie->vote_average }}"
+            data-vote-count="{{ $movie->vote_count }}"
+            data-poster="{{ $movie->poster_path ? 'https://image.tmdb.org/t/p/original'.$movie->poster_path : '' }}"
+          >
+            <img src="https://image.tmdb.org/t/p/original{{ $movie->poster_path }}" alt="{{ $movie->title }} - #{{ $loop->iteration }}">
+            <span class="heart" aria-label="Add {{ $movie->title }} to watchlist">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"
+                  d="M11.648 3.159c1.89-1.848 4.953-1.848 6.843 0 1.89 1.847 1.89 4.84 0 6.688l-7.07 6.908a.75.75 0 0 1-1.042 0l-7.07-6.908c-1.89-1.848-1.89-4.84 0-6.688 1.89-1.848 4.953-1.848 6.843 0l.748.731.748-.731z"/>
+              </svg>
+            </span>
+          </div>
+        @endforeach
+      </div>
+    </section>
 
         <!-- BROWSE GRID -->
         <section class="section" aria-labelledby="browse-title">
@@ -47,20 +72,30 @@
             <h1 id="browse-title" style="text-align: center;">Browse</h1>
         </div>
 
-        <div class="movie-grid">
-            @foreach($movies as $movie)
-            <div class="movie-card" data-title="{{ $movie->title }}">
-                <img src="https://image.tmdb.org/t/p/original{{ $movie->poster_path }}" alt="{{ $movie->title }} poster">
-                <span class="heart" aria-label="Add {{ $movie->title }} to watchlist">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
-                    <path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"
-                    d="M11.648 3.159c1.89-1.848 4.953-1.848 6.843 0 1.89 1.847 1.89 4.84 0 6.688l-7.07 6.908a.75.75 0 0 1-1.042 0l-7.07-6.908c-1.89-1.848-1.89-4.84 0-6.688 1.89-1.848 4.953-1.848 6.843 0l.748.731.748-.731z"/>
-                </svg>
-                </span>
-            </div>
-            @endforeach
-        </div>
-        </section>
+      <div class="movie-grid">
+        @foreach($movies as $movie)
+          <div
+            class="movie-card"
+            {{-- data elements are stored to be able to use for js for the modal box / pop up --}}
+            data-tmdb-id="{{ $movie->tmdb_id }}"
+            data-title="{{ $movie->title }}"
+            data-overview="{{ e($movie->overview) }}"
+            data-release-date="{{ $movie->release_date }}"
+            data-rating="{{ $movie->vote_average }}"
+            data-vote-count="{{ $movie->vote_count }}"
+            data-poster="{{ $movie->poster_path ? 'https://image.tmdb.org/t/p/original'.$movie->poster_path : '' }}"
+          >
+              <img src="https://image.tmdb.org/t/p/original{{ $movie->poster_path }}" alt="{{ $movie->title }} poster">
+            <span class="heart" aria-label="Add {{ $movie->title }} to watchlist">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"
+                  d="M11.648 3.159c1.89-1.848 4.953-1.848 6.843 0 1.89 1.847 1.89 4.84 0 6.688l-7.07 6.908a.75.75 0 0 1-1.042 0l-7.07-6.908c-1.89-1.848-1.89-4.84 0-6.688 1.89-1.848 4.953-1.848 6.843 0l.748.731.748-.731z"/>
+              </svg>
+            </span>
+          </div>
+        @endforeach
+      </div>
+    </section>
 
         <!-- WATCHLIST SECTION -->
         <section class="section" aria-labelledby="watchlist-title">
@@ -73,5 +108,7 @@
 @endsection
 
 @push('scripts')
-    <script src="/js/script.js" defer></script>
+  <script src="/js/topten.js" defer></script>
+  <script src="/js/script.js" defer></script>
+  <script src="/js/movie-modal.js" defer></script>
 @endpush

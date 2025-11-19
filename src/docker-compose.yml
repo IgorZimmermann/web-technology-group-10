@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   app:
     build:
@@ -8,6 +6,13 @@ services:
     container_name: tenflix-app
     ports:
       - "8080:8000"
+    # for volumes to work do the following 
+    # composer install (form TenFlix)
+    # make sure to have the .env file as .env.example
+    # php artisan key:generate
+    # if its slow or you would like to remove it just comment out the volumes section
+    volumes:
+      - ./TenFlix:/var/www/html:rw,cached
     environment:
       APP_ENV: local
       APP_URL: http://localhost:8080

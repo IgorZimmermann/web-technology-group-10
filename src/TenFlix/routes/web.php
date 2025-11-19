@@ -5,6 +5,15 @@ use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Movie;
 
+Route::get('/', function () {
+    $movies = Movie::all();
+    $topMovies = Movie::orderBy('vote_count', 'desc')->take(10)->get();
+    return view('pages.home', [
+        'movies' => $movies,
+        'topMovies' => $topMovies,
+    ]);
+});
+
 // home at both "/" and "/index.html"
 Route::view('/', 'pages.home')->name('home');
 Route::view('/index.html', 'pages.home');
