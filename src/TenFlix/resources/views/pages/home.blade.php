@@ -36,7 +36,13 @@
         </div>
     </nav>
     <main class="content-wrapper">
-        <div class="content"></div>
+        <div class="content" style="background-image: url('{{$bannerMovie->poster_path ? 'https://image.tmdb.org/t/p/original'.$bannerMovie->poster_path : '' }}')">
+            <div class="meta-wrapper">
+                <h2 class="meta-title-text">{{$bannerMovie->title}}</h2>
+                <p class="meta-tagline">{{$bannerMovie->overview}}</p>
+            </div>
+            <div class="meta-gradient"></div>
+        </div>
 
     <section class="section" aria-labelledby="top-ten-title">
       <h2 id="top-ten-title" style="text-align: center; margin: 50px 0;">Top 10 Movies</h2>

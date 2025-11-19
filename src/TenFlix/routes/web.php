@@ -7,6 +7,7 @@ use App\Models\Movie;
 
 Route::get('/', function () {
     $movies = Movie::all();
+    $bannerMovie = Movie::orderBy('vote_count', 'desc')->first();
     $topMovies = Movie::orderBy('vote_count', 'desc')->take(10)->get();
     $actionMovies = Movie::where('genre', 'like', '%Action%')
         ->orderBy('vote_count', 'desc')
@@ -22,6 +23,7 @@ Route::get('/', function () {
         ->get();
     return view('pages.home', [
         'movies' => $movies,
+        'bannerMovie' => $bannerMovie,
         'topMovies' => $topMovies,
         'actionMovies' => $actionMovies,
         'thrillerMovies' => $thrillerMovies,
