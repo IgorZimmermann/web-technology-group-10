@@ -25,6 +25,7 @@ class SignupController extends Controller
         $user->email = $request->input('email');
         $rawpwd = $request->input('password');
         $user->password = Hash::make($rawpwd);
+        $user->is_admin = false;
 
         $user->save();
 

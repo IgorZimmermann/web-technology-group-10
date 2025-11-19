@@ -13,17 +13,21 @@
         <div class="navbar-wrapper">
             <div class="navbar-link-wrapper">
                 <a href="">home</a>
+                @auth
+                    @if (Auth::user()->is_admin)
+                        <a href="/admin">admin</a>
+                    @endif
+                @endauth
             </div>
             <div>
                 <span>logo here</span>
             </div>
             <div class="navbar-link-wrapper">
-                @auth{{--  todo: implement a better logout --}}
+                @auth
                     <span>{{ Auth::user()->name }}</span>
-                    <form method="POST" action="/logout"  style="display: inline;">
+                    <form method="POST" action="/logout" style="display: inline; margin: 0;">
                         @csrf
-                        <button type="submit"
-                            style="background: none; border: none; color: inherit; cursor: pointer; text-decoration: underline;">Logout</button>
+                        <button type="submit">logout</button>
                     </form>
                 @else
                     <a href="/login">login</a>

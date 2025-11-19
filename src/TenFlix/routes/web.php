@@ -12,6 +12,20 @@ Route::get('/', function () {
         'movies' => $movies,
         'topMovies' => $topMovies,
     ]);
+
+// home at both "/" and "/index.html"
+Route::view('/', 'pages.home')->name('home');
+Route::view('/index.html', 'pages.home');
+
+
+Route::get('/admin', function()
+    {
+    if (Auth::user()->is_admin==true) {
+        return view('pages.admin');
+    }
+    else {
+        return redirect('/');
+    }
 });
 
 Route::view('/login.html', 'pages.login');
