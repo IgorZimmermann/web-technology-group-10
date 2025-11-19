@@ -27,7 +27,7 @@ Route::get('/', function () {
         'thrillerMovies' => $thrillerMovies,
         'crimeMovies' => $crimeMovies,
     ]);
-)};
+});
 
 // home at both "/" and "/index.html"
 Route::view('/', 'pages.home')->name('home');
