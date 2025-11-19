@@ -3,6 +3,7 @@
 use App\Http\Controllers\SignupController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Movie;
 
 Route::get('/', function () {
@@ -35,14 +36,18 @@ Route::get('/index.html', function () {
     return redirect()->route('home');
 });
 
-Route::get('/admin', function()
-    {
-    if (Auth::user()->is_admin==true) {
-        return view('pages.admin');
-    }
-    else {
+Route::get('/admin', function () {
+    if (!Auth::check() || !Auth::user()->is_admin) {
         return redirect('/');
     }
+
+    $movies = Movie::all();
+    $topTenMovies = Movie::orderBy('vote_count', 'desc')->take(10)->get();
+
+    return view('pages.admin', [
+        'movies' => $movies,
+        'topTenMovies' => $topTenMovies,
+    ]);
 });
 
 Route::view('/login.html', 'pages.login');
