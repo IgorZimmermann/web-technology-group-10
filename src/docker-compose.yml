@@ -9,8 +9,6 @@ services:
         condition: service_healthy
     ports:
       - "8080:8000"
-    volumes:
-      - ./TenFlix:/var/www/html:rw,cached
     environment:
       APP_ENV: local
       APP_URL: http://localhost:8080
