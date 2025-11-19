@@ -1,12 +1,15 @@
-<? php
+<?php
 
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use App\Models\User;
 
 class WatchlistController extends Controller {
     public function watchlist(Request $request) {
+        Log::info('hello');
         $validated = $request->validate([
             'id' => 'required'
         ])
