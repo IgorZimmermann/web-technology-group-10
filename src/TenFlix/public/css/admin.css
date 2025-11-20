@@ -106,13 +106,22 @@ body {
   align-items: center;
 }
 
-.add-movie-form input {
+.add-movie-form input,
+.add-movie-form textarea {
   padding: 10px;
   border: 1px solid #444;
   background-color: #333;
   color: #fff;
   border-radius: 5px;
+  font-family: inherit;
 }
+
+.add-movie-form textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+
 
 .add-movie-form button {
   padding: 10px 15px;

@@ -51,7 +51,7 @@
             <input type="text" id="new-movie-title" placeholder="Movie Title" />
             <input type="text" id="new-movie-poster" placeholder="Poster URL" />
             <input type="date" id="new-movie-release-date" />
-            <input type="text" id="new-movie-genre" placeholder="Genres (e.g., Action, Thriller)" />
+            <input type="text" id="new-movie-genre" placeholder="Genres" />
             <textarea id="new-movie-overview" placeholder="Description" rows="3"></textarea>
             <button id="add-movie-btn">Add Movie</button>
           </div>
