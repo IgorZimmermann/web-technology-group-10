@@ -32,6 +32,9 @@ class MovieController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'poster_path' => 'required|string',
+            'overview' => 'nullable|string',
+            'release_date' => 'nullable|date',
+            'genre' => 'nullable|string|max:255',
         ]);
 
         try {

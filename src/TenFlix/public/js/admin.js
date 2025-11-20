@@ -4,6 +4,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const addMovieBtn = document.getElementById("add-movie-btn");
   const newMovieTitleInput = document.getElementById("new-movie-title");
   const newMoviePosterInput = document.getElementById("new-movie-poster");
+  const newMovieOverviewInput = document.getElementById("new-movie-overview");
+  const newMovieGenreInput = document.getElementById("new-movie-genre");
+  const newMovieReleaseInput = document.getElementById("new-movie-release-date");
 
   let movies = [];
   let topTen = [];
@@ -142,6 +145,9 @@ document.addEventListener("DOMContentLoaded", () => {
   addMovieBtn.addEventListener("click", async () => {
     const title = newMovieTitleInput.value.trim();
     const posterUrl = newMoviePosterInput.value.trim();
+    const overview = newMovieOverviewInput.value.trim();
+    const genre = newMovieGenreInput.value.trim();
+    const releaseDate = newMovieReleaseInput.value;
     
     if (title && posterUrl && !movies.some((m) => m.title === title)) {
       try {
@@ -154,8 +160,9 @@ document.addEventListener("DOMContentLoaded", () => {
           body: JSON.stringify({
             title: title,
             poster_path: posterUrl,
-            overview: '',
-            release_date: new Date().toISOString().split('T')[0],
+            overview: overview || '',
+            release_date: releaseDate || new Date().toISOString().split('T')[0],
+            genre: genre || null,
             vote_average: 0,
             vote_count: 0
           })
@@ -168,6 +175,9 @@ document.addEventListener("DOMContentLoaded", () => {
           renderAllMovies();
           newMovieTitleInput.value = "";
           newMoviePosterInput.value = "";
+          newMovieOverviewInput.value = "";
+          newMovieGenreInput.value = "";
+          newMovieReleaseInput.value = "";
           console.log('Movie added successfully');
         } else {
           alert('Failed to add movie: ' + data.message);
