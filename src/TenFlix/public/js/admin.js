@@ -8,12 +8,10 @@ document.addEventListener("DOMContentLoaded", () => {
   let movies = [];
   let topTen = [];
 
-  // Load data from server-rendered movies
   function fetchData() {
     try {
       movies = window.moviesData || [];
       
-      // Get top ten movies from server (ordered by vote_count desc)
       const topTenMovies = window.topTenMoviesData || [];
       topTen = topTenMovies.map(movie => movie.id);
       
@@ -48,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
         topTenContainer.appendChild(movieEl);
       }
     });
-    renderAllMovies(); // Re-render all movies to update their top-ten status
+    renderAllMovies();
   }
 
   function renderAllMovies() {
@@ -86,10 +84,8 @@ document.addEventListener("DOMContentLoaded", () => {
   window.toggleTopTen = function (movieId) {
     const index = topTen.indexOf(movieId);
     if (index > -1) {
-      // remove from top ten
       topTen.splice(index, 1);
     } else {
-      // add to top ten
       if (topTen.length < 10) {
         topTen.push(movieId);
       } else {
@@ -118,7 +114,6 @@ document.addEventListener("DOMContentLoaded", () => {
       renderAllMovies();
       renderTopTen();
       saveTopTenToDatabase();
-      alert('Note: This only removes the movie from this session. Refresh the page to see all movies again.');
     }
   };
 
@@ -142,7 +137,6 @@ document.addEventListener("DOMContentLoaded", () => {
       renderAllMovies();
       newMovieTitleInput.value = "";
       newMoviePosterInput.value = "";
-      alert('Note: This movie is added temporarily. To persist it, you need to implement backend functionality.');
     } else {
       alert("Please provide a unique title and a poster URL.");
     }
@@ -171,10 +165,6 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error('Error saving top 10:', error);
       alert('Error saving changes. Please try again.');
     }
-  }
-
-  function saveTopTen() {
-    localStorage.setItem('topTenMovies', JSON.stringify(topTen));
   }
 
   fetchData();

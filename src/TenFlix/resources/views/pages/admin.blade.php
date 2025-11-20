@@ -11,12 +11,25 @@
       <div class="navbar-wrapper">
         <div class="navbar-link-wrapper">
           <a href="{{ route('home') }}">home</a>
+          @auth
+            @if (Auth::user()->is_admin)
+              <a href="/admin">admin</a>
+            @endif
+          @endauth
         </div>
         <div>
-          <span>logo here</span>
+          <img src="/img/logo.png" class="logo">
         </div>
         <div class="navbar-link-wrapper">
-          <a href="/login.html">login</a>
+          @auth
+            <span>{{ Auth::user()->name }}</span>
+            <form method="POST" action="/logout" style="display: inline; margin: 0;">
+              @csrf
+              <button type="submit">logout</button>
+            </form>
+          @else
+            <a href="/login">login</a>
+          @endauth
         </div>
       </div>
     </nav>
@@ -27,7 +40,6 @@
       <section class="section">
         <h2>Manage Top 10 Movies</h2>
         <div id="top-ten-management">
-          <!-- Top 10 movies will be loaded here -->
         </div>
       </section>
 
@@ -41,7 +53,6 @@
             <button id="add-movie-btn">Add Movie</button>
           </div>
           <div class="movie-grid" id="all-movies-grid">
-            <!-- All movies will be loaded here -->
           </div>
         </div>
       </section>
