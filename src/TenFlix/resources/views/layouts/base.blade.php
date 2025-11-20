@@ -10,6 +10,8 @@
 
   <!-- Page-level CSS slots -->
   @stack('styles')
+
+  @yield('head')
 </head>
 <body>
   @yield('body')

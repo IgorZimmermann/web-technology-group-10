@@ -7,6 +7,10 @@
     <link rel="stylesheet" href="/css/watchlist.css">
 @endpush
 
+@section('head')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+@endsection
+
 @section('body')
     <nav class="navbar">
         <div class="navbar-wrapper">

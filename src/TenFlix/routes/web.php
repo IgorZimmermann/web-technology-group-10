@@ -55,4 +55,4 @@ Route::get('login', function () {
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout']);
 
-Route::post('/watchlist', [WatchlistController::class, 'watchlist']);
+Route::post('/watchlist', [WatchlistController::class, 'setWatchlist']);

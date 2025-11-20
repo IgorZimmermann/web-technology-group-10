@@ -4,11 +4,15 @@ watchlistButtons.forEach((button, i) => {
     if (button.hasAttribute("data-id")) {
         button.addEventListener("click", async () => {
             await fetch("/watchlist", {
-                body: {
+                body: JSON.stringify({
                     id: button.getAttribute("data-id"),
-                },
+                }),
                 method: "POST",
-                credentials: "include",
+                headers: {
+                    "X-CSRF-TOKEN": document
+                        .querySelector('meta[name="csrf-token"]')
+                        .getAttribute("content"),
+                },
             });
         });
     }
