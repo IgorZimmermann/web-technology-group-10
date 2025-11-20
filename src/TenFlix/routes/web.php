@@ -15,7 +15,7 @@ Route::get('/', function () {
         $userWatchlist = User::where('id', $userId)->first()->watchlist;
 
         $watchlistSplit = explode(',', $userWatchlist);
-        $watchlisted = $movies->filter(static function ($element) {
+        $watchlisted = $movies->filter(function ($element) use ($watchlistSplit) {
             return in_array($element->tmdb_id, $watchlistSplit ?? []);
         });
     }
@@ -30,7 +30,7 @@ Route::get('/index.html', function () {
         $userWatchlist = User::where('id', $userId)->first()->watchlist;
 
         $watchlistSplit = explode(',', $userWatchlist);
-        $watchlisted = $movies->filter(static function ($element) {
+        $watchlisted = $movies->filter(function ($element) use ($watchlistSplit) {
             return in_array($element->tmdb_id, $watchlistSplit ?? []);
         });
     }
