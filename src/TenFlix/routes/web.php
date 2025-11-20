@@ -3,6 +3,7 @@
 use App\Http\Controllers\SignupController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\TopTenController;
+use App\Http\Controllers\MovieController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Movie;
@@ -42,7 +43,7 @@ Route::get('/admin', function () {
         return redirect('/');
     }
 
-    $movies = Movie::all();
+    $movies = Movie::orderBy('id', 'asc')->get();
     $topTenMovies = Movie::getTopTen();
 
     return view('pages.admin', [
@@ -73,3 +74,6 @@ Route::get('/admin.html', function () {
 Route::get('/api/top-ten', [TopTenController::class, 'index']);
 Route::post('/api/top-ten', [TopTenController::class, 'update']);
 Route::post('/api/top-ten/reset', [TopTenController::class, 'reset']);
+
+Route::post('/api/movies', [MovieController::class, 'store']);
+Route::delete('/api/movies/{id}', [MovieController::class, 'destroy']);

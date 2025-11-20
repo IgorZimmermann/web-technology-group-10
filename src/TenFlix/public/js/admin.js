@@ -107,36 +107,75 @@ document.addEventListener("DOMContentLoaded", () => {
     saveTopTenToDatabase();
   };
 
-  window.removeMovie = function (movieId) {
+  window.removeMovie = async function (movieId) {
     if (confirm('Are you sure you want to remove this movie?')) {
-      movies = movies.filter((movie) => movie.id !== movieId);
-      topTen = topTen.filter((id) => id !== movieId);
-      renderAllMovies();
-      renderTopTen();
-      saveTopTenToDatabase();
+      try {
+        const response = await fetch(`/api/movies/${movieId}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+          }
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          movies = movies.filter((movie) => movie.id !== movieId);
+          topTen = topTen.filter((id) => id !== movieId);
+          renderAllMovies();
+          renderTopTen();
+          if (topTen.length > 0) {
+            await saveTopTenToDatabase();
+          }
+          console.log('Movie deleted successfully');
+        } else {
+          alert('Failed to delete movie: ' + data.message);
+        }
+      } catch (error) {
+        console.error('Error deleting movie:', error);
+        alert('Error deleting movie. Please try again.');
+      }
     }
   };
 
-  addMovieBtn.addEventListener("click", () => {
+  addMovieBtn.addEventListener("click", async () => {
     const title = newMovieTitleInput.value.trim();
     const posterUrl = newMoviePosterInput.value.trim();
     
     if (title && posterUrl && !movies.some((m) => m.title === title)) {
-      // Create a temporary ID for the new movie
-      const newMovie = {
-        id: Date.now(), // temporary ID
-        title: title,
-        poster_path: posterUrl,
-        overview: '',
-        release_date: new Date().toISOString().split('T')[0],
-        vote_average: 0,
-        vote_count: 0
-      };
-      
-      movies.push(newMovie);
-      renderAllMovies();
-      newMovieTitleInput.value = "";
-      newMoviePosterInput.value = "";
+      try {
+        const response = await fetch('/api/movies', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+          },
+          body: JSON.stringify({
+            title: title,
+            poster_path: posterUrl,
+            overview: '',
+            release_date: new Date().toISOString().split('T')[0],
+            vote_average: 0,
+            vote_count: 0
+          })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          movies.push(data.data);
+          renderAllMovies();
+          newMovieTitleInput.value = "";
+          newMoviePosterInput.value = "";
+          console.log('Movie added successfully');
+        } else {
+          alert('Failed to add movie: ' + data.message);
+        }
+      } catch (error) {
+        console.error('Error adding movie:', error);
+        alert('Error adding movie. Please try again.');
+      }
     } else {
       alert("Please provide a unique title and a poster URL.");
     }
