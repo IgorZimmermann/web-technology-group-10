@@ -216,5 +216,36 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  const resetTopTenBtn = document.getElementById('reset-top-ten-btn');
+  if (resetTopTenBtn) {
+    resetTopTenBtn.addEventListener('click', async () => {
+      if (confirm('Are you sure you want to reset the Top 10 to default (sorted by vote count)?')) {
+        try {
+          const response = await fetch('/api/top-ten/reset', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+            }
+          });
+          
+          const data = await response.json();
+          
+          if (data.success) {
+            topTen = data.data.map(movie => movie.id);
+            renderTopTen();
+            renderAllMovies();
+            console.log('Top 10 reset successfully');
+          } else {
+            alert('Failed to reset Top 10: ' + data.message);
+          }
+        } catch (error) {
+          console.error('Error resetting Top 10:', error);
+          alert('Error resetting Top 10. Please try again.');
+        }
+      }
+    });
+  }
+
   fetchData();
 });

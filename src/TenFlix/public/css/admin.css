@@ -234,3 +234,32 @@ body {
   cursor: pointer;
   margin-left: 5px;
 }
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.section-header h2 {
+  margin: 0;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.reset-btn {
+  padding: 10px 20px;
+  border: none;
+  background-color: #555;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 5px;
+  font-family: inherit;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.reset-btn:hover {
+  background-color: #666;
+}

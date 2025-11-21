@@ -38,7 +38,10 @@
       <h1>Admin Panel</h1>
 
       <section class="section">
-        <h2>Manage Top 10 Movies</h2>
+        <div class="section-header">
+          <h2>Manage Top 10 Movies</h2>
+          <button id="reset-top-ten-btn" class="reset-btn">Reset to Default</button>
+        </div>
         <div id="top-ten-management">
         </div>
       </section>
