@@ -12,16 +12,20 @@
     <nav class="navbar">
         <div class="navbar-wrapper">
             <div class="navbar-link-wrapper">
-                <a href="">home</a>
+                <a class="navbar-logo" href="/">
+                    <img src="/img/logo.png" class="logo">
+                </a>
                 @auth
                     @if (Auth::user()->is_admin)
                         <a href="/admin">admin</a>
                     @endif
                 @endauth
             </div>
-            <div>
-                <img src="/img/logo.png" class="logo">
+            <div class="navbar-link-wrapper">
+                <input type="text" id="searchInput" placeholder="Search movies...">
             </div>
+            <div class="navbar-link-wrapper">
+                <a href="">Watchlist</a>
             <div class="navbar-link-wrapper">
                 @auth
                     <span>{{ Auth::user()->name }}</span>
@@ -75,7 +79,7 @@
         <!-- BROWSE GRID -->
         <section class="section" aria-labelledby="browse-title">
         <div id="pageHeader">
-            <a href="/index.html">Home</a>
+            <!--<a href="/index.html">Home</a>-->
             <h1 id="browse-title" style="text-align: center;">Browse</h1>
         </div>
 
