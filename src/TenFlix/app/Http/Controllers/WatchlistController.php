@@ -36,4 +36,33 @@ class WatchlistController extends Controller {
 
         return "{$newWatchlist}";
     }
+
+    public function setWatched(Request $request) {
+        $body = json_decode($request->getContent());
+        $id = (string)$body->id;
+
+        if (!Auth::check()) {
+            return 'not authed';
+        }
+
+        $userId = Auth::id();
+        $userWatched = Auth::user()->watched;
+
+        $splitWatched = array_filter(explode(',', $userWatched), static function ($elem) {
+            return strlen($elem) > 0;
+        });
+        if (in_array($id, $splitWatched)) {
+            $splitWatched = array_filter($splitWatched, function ($element) use ($id) {
+                return $element != $id;
+            });
+        } else {
+            $splitWatched[] = $id;
+        }
+
+        $newWatched = implode(',', $splitWatched);
+
+        User::where('id',$userId)->update(['watched' => $newWatched]);
+
+        return "{$newWatched}";
+    }
 }

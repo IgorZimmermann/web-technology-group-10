@@ -88,6 +88,7 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout']);
 
 Route::post('/watchlist', [WatchlistController::class, 'setWatchlist']);
+Route::post('/watched', [WatchlistController::class, 'setWatched']);
 
 Route::get('/admin.html', function () {
     $movies = Movie::all();
