@@ -49,6 +49,28 @@ Route::get('/index.html', function () {
     return redirect()->route('home');
 });
 
+Route::get('/watchlist', function () {
+    $movies = Movie::all();
+    $watchlisted = array();
+    if (Auth::check()) {
+        $userId = Auth::id();
+        $userWatchlist = User::where('id', $userId)->first()->watchlist;
+
+        $watchlistSplit = explode(',', $userWatchlist);
+        $watchlisted = $movies->filter(function ($element) use ($watchlistSplit) {
+            return in_array($element->tmdb_id, $watchlistSplit ?? []);
+        });
+        return view('pages.list',
+            [
+                'listTitle' => "Watchlist",
+                'movies' => $watchlisted
+            ]
+        );
+    } else {
+        return redirect()->route('login');
+    }
+});
+
 Route::get('/admin', function () {
     if (!Auth::check() || !Auth::user()->is_admin) {
         return redirect('/');
@@ -72,7 +94,7 @@ Route::post('/signup', [SignupController::class, 'signup']);
 
 Route::get('login', function () {
     return view('pages.login');
-});
+})->name('login');
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout']);
 
