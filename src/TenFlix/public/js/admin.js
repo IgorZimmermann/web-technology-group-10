@@ -111,7 +111,6 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   window.removeMovie = async function (movieId) {
-    if (confirm('Are you sure you want to remove this movie?')) {
       try {
         const response = await fetch(`/api/movies/${movieId}`, {
           method: 'DELETE',
@@ -139,7 +138,6 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error('Error deleting movie:', error);
         alert('Error deleting movie. Please try again.');
       }
-    }
   };
 
   addMovieBtn.addEventListener("click", async () => {
@@ -219,7 +217,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const resetTopTenBtn = document.getElementById('reset-top-ten-btn');
   if (resetTopTenBtn) {
     resetTopTenBtn.addEventListener('click', async () => {
-      if (confirm('Are you sure you want to reset the Top 10 to default (sorted by vote count)?')) {
         try {
           const response = await fetch('/api/top-ten/reset', {
             method: 'POST',
@@ -243,7 +240,6 @@ document.addEventListener("DOMContentLoaded", () => {
           console.error('Error resetting Top 10:', error);
           alert('Error resetting Top 10. Please try again.');
         }
-      }
     });
   }
 
