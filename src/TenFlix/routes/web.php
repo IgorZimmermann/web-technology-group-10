@@ -10,16 +10,6 @@ use App\Models\User;
 
 Route::get('/', function () {
     $movies = Movie::all();
-    $watchlisted = array();
-    if (Auth::check()) {
-        $userId = Auth::id();
-        $userWatchlist = User::where('id', $userId)->first()->watchlist;
-
-        $watchlistSplit = explode(',', $userWatchlist);
-        $watchlisted = $movies->filter(function ($element) use ($watchlistSplit) {
-            return in_array($element->tmdb_id, $watchlistSplit ?? []);
-        });
-    }
     $bannerMovie = Movie::orderBy('vote_count', 'desc')->first();
     $topMovies = Movie::orderBy('vote_count', 'desc')->take(10)->get();
     $actionMovies = Movie::where('genre', 'like', '%Action%')
@@ -36,7 +26,6 @@ Route::get('/', function () {
         ->get();
     return view('pages.home', [
         'movies' => $movies,
-        'watchlisted' => $watchlisted,
         'bannerMovie' => $bannerMovie,
         'topMovies' => $topMovies,
         'actionMovies' => $actionMovies,
