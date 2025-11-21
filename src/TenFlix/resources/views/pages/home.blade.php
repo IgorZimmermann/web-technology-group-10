@@ -21,11 +21,11 @@
                     @endif
                 @endauth
             </div>
-            <div class="navbar-link-wrapper">
+            <div class="navbar-link-wrapper navbar-center">
                 <input type="text" id="searchInput" placeholder="Search movies...">
             </div>
             <div class="navbar-link-wrapper">
-                <a href="">Watchlist</a>
+                <a href="" class="navbar-oval-btn">Watchlist</a>
             <div class="navbar-link-wrapper">
                 @auth
                     <span>{{ Auth::user()->name }}</span>
@@ -34,7 +34,7 @@
                         <button type="submit">logout</button>
                     </form>
                 @else
-                    <a href="/login">login</a>
+                    <a href="/login" class="navbar-oval-btn">login</a>
                 @endauth
             </div>
         </div>
