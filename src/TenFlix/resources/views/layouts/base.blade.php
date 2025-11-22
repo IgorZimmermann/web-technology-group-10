@@ -15,7 +15,7 @@
 <body>
     <nav class="navbar">
         <div class="navbar-wrapper">
-            @if (Request::is('login') || Request::is('signup'))
+            @if (Request::is('*login*') || Request::is('*signup*'))
                 <div class="navbar-center-only">
                     <a class="navbar-logo" href="/">
                         <img src="/img/logo.png" class="logo">
