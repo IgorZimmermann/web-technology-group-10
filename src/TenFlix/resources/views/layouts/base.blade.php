@@ -6,13 +6,51 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>@yield('title','TenFlix')</title>
-  
+
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap">
   <link rel="stylesheet" href="/css/modal.css">
   @stack('styles')
 </head>
 
 <body>
+    <nav class="navbar">
+        <div class="navbar-wrapper">
+            @if (Request::is('login') || Request::is('signup'))
+                <div class="navbar-center-only">
+                    <a class="navbar-logo" href="/">
+                        <img src="/img/logo.png" class="logo">
+                    </a>
+                </div>
+            @else
+                <div class="navbar-link-wrapper">
+                    <a class="navbar-logo" href="/">
+                        <img src="/img/logo.png" class="logo">
+                    </a>
+                    @auth
+                        @if (Auth::user()->is_admin)
+                            <a href="/admin">admin</a>
+                        @endif
+                    @endauth
+                </div>
+                <div class="navbar-link-wrapper navbar-center">
+                    <input type="text" id="searchInput" placeholder="Search movies...">
+                </div>
+                <div class="navbar-link-wrapper">
+                    <a href="" class="navbar-oval-btn">Watchlist</a>
+                <div class="navbar-link-wrapper">
+                    @auth
+                        <span>{{ Auth::user()->name }}</span>
+                        <form method="POST" action="/logout" style="display: inline; margin: 0;">
+                            @csrf
+                            <button type="submit">logout</button>
+                        </form>
+                    @else
+                        <a href="/login" class="navbar-oval-btn">login</a>
+                    @endauth
+                </div>
+            @endif
+        </div>
+    </nav>
   @yield('body')
   <!-- modal class that covers the page -->
   <div class="modal" id="movieModal">

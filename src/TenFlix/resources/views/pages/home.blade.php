@@ -9,36 +9,7 @@
 @endpush
 
 @section('body')
-    <nav class="navbar">
-        <div class="navbar-wrapper">
-            <div class="navbar-link-wrapper">
-                <a class="navbar-logo" href="/">
-                    <img src="/img/logo.png" class="logo">
-                </a>
-                @auth
-                    @if (Auth::user()->is_admin)
-                        <a href="/admin">admin</a>
-                    @endif
-                @endauth
-            </div>
-            <div class="navbar-link-wrapper navbar-center">
-                <input type="text" id="searchInput" placeholder="Search movies...">
-            </div>
-            <div class="navbar-link-wrapper">
-                <a href="" class="navbar-oval-btn">Watchlist</a>
-            <div class="navbar-link-wrapper">
-                @auth
-                    <span>{{ Auth::user()->name }}</span>
-                    <form method="POST" action="/logout" style="display: inline; margin: 0;">
-                        @csrf
-                        <button type="submit">logout</button>
-                    </form>
-                @else
-                    <a href="/login" class="navbar-oval-btn">login</a>
-                @endauth
-            </div>
-        </div>
-    </nav>
+
     <main class="content-wrapper">
         <div class="content" style="background-image: url('{{$bannerMovie->poster_path ? 'https://image.tmdb.org/t/p/original'.$bannerMovie->poster_path : '' }}')">
             <div class="meta-wrapper">
