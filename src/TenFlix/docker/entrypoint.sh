@@ -24,7 +24,8 @@ if [ "${SKIP_DB_WAIT:-0}" != "1" ]; then
   done
 fi
 
-run_artisan migrate --force --no-interaction
+run_artisan migrate:fresh --force --no-interaction
+run_artisan db:seed --force --no-interaction
 
 if [ "${RUN_TMDB_FETCH:-1}" = "1" ]; then
   run_artisan tmdb:fetch-movies 5 || echo "TMDB fetch failed; continuing without seed."
