@@ -51,11 +51,7 @@
         <div id="movie-management">
           <div class="add-movie-form">
             <h3>Add New Movie</h3>
-            <input type="text" id="new-movie-title" placeholder="Movie Title" />
-            <input type="text" id="new-movie-poster" placeholder="Poster URL" />
-            <input type="date" id="new-movie-release-date" />
-            <input type="text" id="new-movie-genre" placeholder="Genres" />
-            <textarea id="new-movie-overview" placeholder="Description" rows="3"></textarea>
+            <input type="number" id="new-movie-tmdb-id" placeholder="TMDB ID" />
             <button id="add-movie-btn">Add Movie</button>
           </div>
           <div class="movie-grid" id="all-movies-grid">

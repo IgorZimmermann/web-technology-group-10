@@ -6,6 +6,7 @@ use App\Models\Movie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Http;
 
 class MovieController extends Controller
 {
@@ -30,23 +31,50 @@ class MovieController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'poster_path' => 'required|string',
-            'overview' => 'nullable|string',
-            'release_date' => 'nullable|date',
-            'genre' => 'nullable|string|max:255',
+            'tmdb_id' => 'required|integer',
         ]);
 
         try {
+            $existingMovie = Movie::where('tmdb_id', $request->tmdb_id)->first();
+            if ($existingMovie) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Movie with this TMDB ID already exists'
+                ], 400);
+            }
+
+            $apiKey = env('TMDB_API_KEY');
+            if (!$apiKey) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'TMDB API key not configured'
+                ], 500);
+            }
+
+            $response = Http::get("https://api.themoviedb.org/3/movie/{$request->tmdb_id}", [
+                'api_key' => $apiKey,
+            ]);
+
+            if (!$response->successful()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Failed to fetch movie from TMDB. Please check the TMDB ID.'
+                ], 404);
+            }
+
+            $movieData = $response->json();
+
+            $genres = collect($movieData['genres'] ?? [])->pluck('name')->implode(', ');
+
             $movie = Movie::create([
-                'title' => $request->title,
-                'poster_path' => $request->poster_path,
-                'overview' => $request->overview ?? '',
-                'release_date' => $request->release_date ?? now()->format('Y-m-d'),
-                'vote_average' => $request->vote_average ?? 0,
-                'vote_count' => $request->vote_count ?? 0,
-                'genre' => $request->genre ?? null,
-                'tmdb_id' => null, // Manually added movies don't have TMDB ID
+                'tmdb_id' => $request->tmdb_id,
+                'title' => $movieData['title'] ?? 'Unknown',
+                'poster_path' => $movieData['poster_path'] ?? '',
+                'overview' => $movieData['overview'] ?? '',
+                'release_date' => $movieData['release_date'] ?? now()->format('Y-m-d'),
+                'vote_average' => $movieData['vote_average'] ?? 0,
+                'vote_count' => $movieData['vote_count'] ?? 0,
+                'genre' => $genres ?: null,
             ]);
             
             return response()->json([
