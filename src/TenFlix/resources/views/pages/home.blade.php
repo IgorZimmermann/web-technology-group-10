@@ -3,7 +3,10 @@
 @section('title', 'TenFlix')
 
 @push('styles')
-  <link rel="stylesheet" href="/css/home.css">
+
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/watchlist.css">
+    <link rel="stylesheet" href="/css/modal.css">
   <link rel="stylesheet" href="/css/watchlist.css">
   <link rel="stylesheet" href="/css/topten.css">
 @endpush
@@ -22,6 +25,12 @@
                         <a href="/admin">admin</a>
                     @endif
                 @endauth
+            </div>
+            <!-- SEARCH BAR IN NAVBAR -->
+            <div style="position: relative; flex: 1; max-width: 300px;">
+                <input type="text" id="searchInput" placeholder="Search movies..."
+                    style="width: 100%; padding: 8px 12px; font-size: 14px; border: 1px solid #ddd; border-radius: 6px; outline: none; transition: border-color 0.3s;">
+                <div id="searchResults" style="position: absolute; width: 100%; top: 100%; left: 0; margin-top: 5px; background: white; border: 1px solid #ddd; border-radius: 6px; max-height: 400px; overflow-y: auto; display: none; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.1);"></div>
             </div>
             <div>
                 <img src="/img/logo.png" class="logo">
@@ -197,10 +206,32 @@
       </div>
     </section>
   </main>
+
+  <!-- MOVIE MODAL -->
+  <div id="movieModal" class="modal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" data-modal-title>Movie Title</h2>
+        <button class="modal-close" data-modal-close>×</button>
+      </div>
+      <img class="modal-poster" data-modal-poster src="" alt="Movie poster">
+      <div class="modal-meta">
+        <div data-modal-release>Release date</div>
+        <div data-modal-genre>Genre</div>
+        <div data-modal-rating>Rating</div>
+        <div data-modal-votes>Votes</div>
+      </div>
+      <p class="modal-overview" data-modal-overview>Overview text</p>
+      <button class="modal-watchlist" data-modal-watchlist>Add to Watchlist</button>
+    </div>
+  </div>
 @endsection
 
 @push('scripts')
+    <script src="/js/script.js" defer></script>
+    <script src="/js/movie-modal.js" defer></script>
+    <script src="/js/search.js" defer></script>
   <script src="/js/watchlist.js" defer></script>
   <script src="/js/topten.js" defer></script>
-  <script src="/js/movie-modal.js" defer></script>
 @endpush
