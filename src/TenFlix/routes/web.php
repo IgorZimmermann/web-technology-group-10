@@ -69,7 +69,7 @@ Route::get('/watched', function () {
         $watched = Movie::whereIn('tmdb_id', $watchedSplit)->get();
         return view('pages.list',
             [
-                'listTitle' => "Watched",
+                'listTitle' => "Seen",
                 'movies' => $watched
             ]
         );

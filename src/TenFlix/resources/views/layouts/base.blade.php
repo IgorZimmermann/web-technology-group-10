@@ -45,7 +45,7 @@
                     <a href="/watchlist" class="navbar-oval-btn">Watchlist</a>
                 <div class="navbar-link-wrapper">
                 <div class="navbar-link-wrapper">
-                    <a href="/watched" class="navbar-oval-btn">Watched</a>
+                    <a href="/watched" class="navbar-oval-btn">Seen</a>
                 <div class="navbar-link-wrapper">
                     @auth
                         <span style="color:#c95360">{{ Auth::user()->name }}</span>
