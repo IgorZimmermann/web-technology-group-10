@@ -1,24 +1,27 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const topTenContainer = document.getElementById("top-ten-management");
-    const allMoviesContainer = document.getElementById("all-movies-grid");
-    const addMovieBtn = document.getElementById("add-movie-btn");
-    const newMovieTmdbIdInput = document.getElementById("new-movie-tmdb-id");
+  const topTenContainer = document.getElementById("top-ten-management");
+  const allMoviesContainer = document.getElementById("all-movies-grid");
+  const addMovieBtn = document.getElementById("add-movie-btn");
+  const newMovieTitleInput = document.getElementById("new-movie-title");
+  const newMoviePosterInput = document.getElementById("new-movie-poster");
+  const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute("content");
 
-    let movies = [];
-    let topTen = [];
+  let movies = [];
+  let topTen = [];
 
-    function fetchData() {
-        try {
-            movies = window.moviesData || [];
-
-            const topTenMovies = window.topTenMoviesData || [];
-            topTen = topTenMovies.map((movie) => movie.id);
-
-            renderTopTen();
-            renderAllMovies();
-        } catch (error) {
-            console.error("Error loading data:", error);
-        }
+  // Load data from server-rendered movies
+  function fetchData() {
+    try {
+      movies = window.moviesData || [];
+      
+      // Get top ten movies from server (ordered by vote_count desc)
+      const topTenMovies = window.topTenMoviesData || [];
+      topTen = topTenMovies.map(movie => movie.id);
+      
+      renderTopTen();
+      renderAllMovies();
+    } catch (error) {
+      console.error("Error loading data:", error);
     }
 
     function renderTopTen() {
@@ -85,6 +88,44 @@ document.addEventListener("DOMContentLoaded", () => {
             allMoviesContainer.appendChild(movieEl);
         });
     }
+    renderTopTen();
+    saveTopTen();
+  };
+
+  window.moveTopTen = function (index, direction) {
+    if (index + direction < 0 || index + direction >= topTen.length) return;
+    const [item] = topTen.splice(index, 1);
+    topTen.splice(index + direction, 0, item);
+    renderTopTen();
+    saveTopTen();
+  };
+
+  window.removeMovie = function (movieId) {
+    if (confirm('Are you sure you want to remove this movie?')) {
+      fetch(`/admin/movies/${movieId}`, {
+        method: "DELETE",
+        headers: {
+          "X-CSRF-TOKEN": csrfToken || "",
+          Accept: "application/json",
+        },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Failed to delete movie");
+          }
+          movies = movies.filter((movie) => movie.id !== movieId);
+          topTen = topTen.filter((id) => id !== movieId);
+          renderAllMovies();
+          renderTopTen();
+          saveTopTen();
+          alert("Movie deleted.");
+        })
+        .catch((error) => {
+          console.error(error);
+          alert("Could not delete movie. Please try again.");
+        });
+    }
+  };
 
     window.toggleTopTen = function (movieId) {
         const index = topTen.indexOf(movieId);
@@ -102,47 +143,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         renderTopTen();
         saveTopTenToDatabase();
-    };
-
-    window.moveTopTen = function (index, direction) {
-        if (index + direction < 0 || index + direction >= topTen.length) return;
-        const [item] = topTen.splice(index, 1);
-        topTen.splice(index + direction, 0, item);
-        renderTopTen();
-        saveTopTenToDatabase();
-    };
-
-    window.removeMovie = async function (movieId) {
-        try {
-            const response = await fetch(`/api/movies/${movieId}`, {
-                method: "DELETE",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN":
-                        document
-                            .querySelector('meta[name="csrf-token"]')
-                            ?.getAttribute("content") || "",
-                },
-            });
-
-            const data = await response.json();
-
-            if (data.success) {
-                movies = movies.filter((movie) => movie.id !== movieId);
-                topTen = topTen.filter((id) => id !== movieId);
-                renderAllMovies();
-                renderTopTen();
-                if (topTen.length > 0) {
-                    await saveTopTenToDatabase();
-                }
-                console.log("Movie deleted successfully");
-            } else {
-                alert("Failed to delete movie: " + data.message);
-            }
-        } catch (error) {
-            console.error("Error deleting movie:", error);
-            alert("Error deleting movie. Please try again.");
-        }
     };
 
     addMovieBtn.addEventListener("click", async () => {

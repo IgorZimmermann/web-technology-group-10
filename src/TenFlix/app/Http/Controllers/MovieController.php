@@ -3,29 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\Movie;
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Http;
 
 class MovieController extends Controller
 {
-    public function destroy($id)
+    public function destroy(Movie $movie): JsonResponse
     {
-        try {
-            $movie = Movie::findOrFail($id);
-            $movie->delete();
-            
-            return response()->json([
-                'success' => true,
-                'message' => 'Movie deleted successfully'
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to delete movie: ' . $e->getMessage()
-            ], 500);
+        if (!Auth::check() || !Auth::user()->is_admin) {
+            return response()->json(['message' => 'Forbidden'], 403);
         }
+
+        $movie->delete();
+
+        return response()->json(['message' => 'Movie deleted']);
     }
     
     public function store(Request $request)
@@ -90,7 +81,3 @@ class MovieController extends Controller
         }
     }
 }
-
-
-
- 

@@ -95,6 +95,9 @@ Route::get('/admin.html', function () {
     return view('pages.admin', ['movies' => $movies, 'topTenMovies' => $topTenMovies]);
 });
 
+Route::delete('/admin/movies/{movie}', [MovieController::class, 'destroy'])
+    ->middleware('auth')
+    ->name('admin.movies.destroy');
 Route::get('/api/top-ten', [TopTenController::class, 'index']);
 Route::post('/api/top-ten', [TopTenController::class, 'update']);
 Route::post('/api/top-ten/reset', [TopTenController::class, 'reset']);
