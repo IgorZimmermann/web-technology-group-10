@@ -186,7 +186,12 @@ document.addEventListener("DOMContentLoaded", () => {
     document.addEventListener("click", (event) => {
         const card = event.target.closest(".movie-card");
         // if its the heart it does nothing / does not open model
-        if (!card || event.target.closest(".heart")) return;
+        if (
+            !card ||
+            event.target.closest(".heart") ||
+            event.target.closest(".tick")
+        )
+            return;
         openModalFromCard(card);
     });
 

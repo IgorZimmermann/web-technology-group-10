@@ -59,6 +59,25 @@ Route::get('/watchlist', function () {
     }
 });
 
+Route::get('/watched', function () {
+    $watched = array();
+    if (Auth::check()) {
+        $userId = Auth::id();
+        $userWatched = User::where('id', $userId)->first()->watched;
+
+        $watchedSplit = array_filter(explode(',', $userWatched));
+        $watched = Movie::whereIn('tmdb_id', $watchedSplit)->get();
+        return view('pages.list',
+            [
+                'listTitle' => "Watched",
+                'movies' => $watched
+            ]
+        );
+    } else {
+        return redirect()->route('login');
+    }
+});
+
 Route::get('/admin', function () {
     if (!Auth::check() || !Auth::user()->is_admin) {
         return redirect('/');
@@ -90,14 +109,14 @@ Route::post('/watchlist', [WatchlistController::class, 'setWatchlist']);
 Route::post('/watched', [WatchlistController::class, 'setWatched']);
 Route::get('/api/watchlist-status', function (\Illuminate\Http\Request $request) {
     $movieId = $request->query('id');
-    
+
     if (!Auth::check() || !$movieId) {
         return response()->json(['inWatchlist' => false]);
     }
-    
+
     $userWatchlist = Auth::user()->watchlist ?? '';
     $watchlistIds = array_filter(explode(',', $userWatchlist), fn($id) => strlen($id) > 0);
-    
+
     return response()->json(['inWatchlist' => in_array((string)$movieId, $watchlistIds)]);
 });
 
