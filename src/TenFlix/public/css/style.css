@@ -60,6 +60,10 @@ input::placeholder {
   font-style: normal;
   font-weight: 700;
   line-height: normal;
+  cursor: pointer;
+}
+.submit-btn:hover{
+    background-color: #c95360;
 }
 .signup-link {
   text-align: center;
