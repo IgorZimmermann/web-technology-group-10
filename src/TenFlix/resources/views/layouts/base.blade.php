@@ -31,19 +31,21 @@
                     </a>
                     @auth
                         @if (Auth::user()->is_admin)
-                            <a href="/admin">admin</a>
+                            <a class="navbar-oval-btn" href="/admin">admin</a>
                         @endif
                     @endauth
                 </div>
-                <div class="navbar-link-wrapper navbar-center">
-                    <input type="text" id="searchInput" placeholder="Search movies...">
-                    <div id="searchResults" class="searchResult"></div>
-                </div>
+                @if (Request::is('/'))
+                    <div class="navbar-link-wrapper navbar-center">
+                        <input type="text" id="searchInput" placeholder="Search movies...">
+                        <div id="searchResults" class="searchResult"></div>
+                    </div>
+                @endif
                 <div class="navbar-link-wrapper">
                     <a href="/watchlist" class="navbar-oval-btn">Watchlist</a>
                 <div class="navbar-link-wrapper">
                     @auth
-                        <span>{{ Auth::user()->name }}</span>
+                        <span style="color:#c95360">{{ Auth::user()->name }}</span>
                         <form method="POST" action="/logout" class="navbar-oval-btn" style="display: inline; margin: 0;">
                             @csrf
                             <button type="submit">logout</button>

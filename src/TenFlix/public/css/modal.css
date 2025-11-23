@@ -86,7 +86,7 @@
   padding: 12px 24px;
   border-radius: 999px;
   border: none;
-  background: #e50914;
+  background: #c95360;
   color: #fff;
   font-size: 0.9rem;
   font-weight: 600;
@@ -121,7 +121,7 @@
     top: 0;
     left: 0;
     z-index: 100;
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(30px);
 }
 
 .navbar-wrapper {
