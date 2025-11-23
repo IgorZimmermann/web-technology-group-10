@@ -256,3 +256,45 @@
     height: 13rem;
     width: auto;
 }
+
+.scroll-container {
+  position: relative;
+  width: 100%;
+}
+
+.scroll-btn {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100px;
+  font-size: 4rem;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  z-index: 5;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+}
+
+.scroll-btn-left {
+  left: 0;
+  background: linear-gradient(to right, #1e1e1ee3, #1e1e1e00);
+}
+.scroll-btn-right {
+  right: 0;
+  background: linear-gradient(to left, #1e1e1ee3, #1e1e1e00);
+}
+
+.scroll-btn-left:not(:disabled):hover {
+  background: linear-gradient(to right,#0f0f0fe3, #1e1e1e00);
+  color: #fff;
+}
+
+.scroll-btn-right:not(:disabled):hover {
+  background: linear-gradient(to left,#0f0f0fe3, #1e1e1e00);
+  color: #fff;
+}
+
