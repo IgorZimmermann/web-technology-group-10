@@ -11,16 +11,22 @@
 - Sean Larsen
 - Örs Tomaj Jeney
 
-## Commands
+## How to start
+
+From the `src` directory:
 
 ```bash
 docker compose up --build
 ```
 
 ## Users
+
 ### Admin
+
 - Email: admin@example.com
 - Password: admin1234
+
 ### User
+
 - Email: user@example.com
 - Password: user1234
