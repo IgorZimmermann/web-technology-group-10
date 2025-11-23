@@ -39,16 +39,13 @@ Route::get('/index.html', function () {
 });
 
 Route::get('/watchlist', function () {
-    $movies = Movie::all();
     $watchlisted = array();
     if (Auth::check()) {
         $userId = Auth::id();
         $userWatchlist = User::where('id', $userId)->first()->watchlist;
 
-        $watchlistSplit = explode(',', $userWatchlist);
-        $watchlisted = $movies->filter(function ($element) use ($watchlistSplit) {
-            return in_array($element->tmdb_id, $watchlistSplit ?? []);
-        });
+        $watchlistSplit = array_filter(explode(',', $userWatchlist));
+        $watchlisted = Movie::whereIn('tmdb_id', $watchlistSplit)->get();
         return view('pages.list',
             [
                 'listTitle' => "Watchlist",
