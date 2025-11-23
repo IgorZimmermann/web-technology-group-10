@@ -6,56 +6,10 @@ body {
   color: #fff;
 }
 
-.navbar {
-  height: 40px;
-  width: 100%;
-  background-color: #2a2a2a;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 100;
-}
-
-.navbar-wrapper {
-  height: 100%;
-  width: calc(100% - 80px);
-  margin: 0 40px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.navbar-wrapper > * {
-  color: #ffffff;
-}
-
-.navbar-link-wrapper {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
+.logo {
+  height: 5rem;
   width: auto;
-  gap: 10px;
-}
-
-.navbar-link-wrapper:last-child {
-  justify-content: flex-end;
-}
-
-.navbar-link-wrapper > :not(:last-child) {
-  margin-right: 10px;
-}
-
-.navbar-link-wrapper > a {
-  color: #fff;
-  text-transform: capitalize;
-  text-decoration: none;
-  white-space: nowrap;
-}
-
-.navbar-link-wrapper > span {
-  color: #ffffff;
+  vertical-align: middle;
 }
 
 .content-wrapper {
@@ -87,13 +41,22 @@ body {
   align-items: center;
 }
 
-.add-movie-form input {
+.add-movie-form input,
+.add-movie-form textarea {
   padding: 10px;
   border: 1px solid #444;
   background-color: #333;
   color: #fff;
   border-radius: 5px;
+  font-family: inherit;
 }
+
+.add-movie-form textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+
 
 .add-movie-form button {
   padding: 10px 15px;
@@ -205,4 +168,33 @@ body {
   padding: 5px;
   cursor: pointer;
   margin-left: 5px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.section-header h2 {
+  margin: 0;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.reset-btn {
+  padding: 10px 20px;
+  border: none;
+  background-color: #555;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 5px;
+  font-family: inherit;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.reset-btn:hover {
+  background-color: #666;
 }

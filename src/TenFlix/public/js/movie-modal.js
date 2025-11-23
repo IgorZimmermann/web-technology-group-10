@@ -36,7 +36,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const { title, overview, releaseDate, rating, voteCount, poster, genre } = data;
     titleEl.textContent = title || 'Untitled';
 
-    posterEl.src = poster;
+    // poster may already be a full URL or a TMDB path
+    posterEl.src = poster ? (poster.startsWith('http') ? poster : `https://image.tmdb.org/t/p/original${poster}`) : '';
     posterEl.alt = `${title || 'Movie'} poster`;
     posterEl.style.display = 'block';
 

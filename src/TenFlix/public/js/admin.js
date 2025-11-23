@@ -23,82 +23,70 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (error) {
       console.error("Error loading data:", error);
     }
-  }
 
-  function renderTopTen() {
-    topTenContainer.innerHTML = "";
-    topTen.forEach((movieId, index) => {
-      const movie = movies.find((m) => m.id === movieId);
-      if (movie) {
-        const movieEl = document.createElement("div");
-        movieEl.classList.add("movie-card");
-        const posterUrl = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : movie.posterUrl || '';
-        movieEl.innerHTML = `
+    function renderTopTen() {
+        topTenContainer.innerHTML = "";
+        topTen.forEach((movieId, index) => {
+            const movie = movies.find((m) => m.id === movieId);
+            if (movie) {
+                const movieEl = document.createElement("div");
+                movieEl.classList.add("movie-card");
+                const posterUrl = movie.poster_path
+                    ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+                    : movie.posterUrl || "";
+                movieEl.innerHTML = `
           <img src="${posterUrl}" alt="${movie.title}">
           <span>${index + 1}. ${movie.title}</span>
           <div class="order-buttons">
             <button onclick="moveTopTen(${index}, -1)" ${
-          index === 0 ? "disabled" : ""
-        }>▲</button>
+                    index === 0 ? "disabled" : ""
+                }>▲</button>
             <button onclick="moveTopTen(${index}, 1)" ${
-          index === topTen.length - 1 ? "disabled" : ""
-        }>▼</button>
-            <button class="remove-from-top-ten" onclick="toggleTopTen(${movie.id})">Remove</button>
+                    index === topTen.length - 1 ? "disabled" : ""
+                }>▼</button>
+            <button class="remove-from-top-ten" onclick="toggleTopTen(${
+                movie.id
+            })">Remove</button>
           </div>
         `;
-        topTenContainer.appendChild(movieEl);
-      }
-    });
-    renderAllMovies(); // Re-render all movies to update their top-ten status
-  }
+                topTenContainer.appendChild(movieEl);
+            }
+        });
+        renderAllMovies();
+    }
 
-  function renderAllMovies() {
-    allMoviesContainer.innerHTML = "";
-    movies.forEach((movie) => {
-      const movieEl = document.createElement("div");
-      movieEl.classList.add("movie-card");
-      movieEl.dataset.title = movie.title;
-      movieEl.dataset.id = movie.id;
+    function renderAllMovies() {
+        allMoviesContainer.innerHTML = "";
+        movies.forEach((movie) => {
+            const movieEl = document.createElement("div");
+            movieEl.classList.add("movie-card");
+            movieEl.dataset.title = movie.title;
+            movieEl.dataset.id = movie.id;
 
-      const isTopTen = topTen.includes(movie.id);
-      const canAdd = topTen.length < 10;
+            const isTopTen = topTen.includes(movie.id);
+            const canAdd = topTen.length < 10;
 
-      let topTenButton = "";
-      if (isTopTen) {
-        topTenButton = `<button class="toggle-top-ten-btn" onclick="toggleTopTen(${movie.id})">Remove from Top 10</button>`;
-      } else if (canAdd) {
-        topTenButton = `<button class="toggle-top-ten-btn" onclick="toggleTopTen(${movie.id})">Add to Top 10</button>`;
-      } else {
-        topTenButton = `<button class="toggle-top-ten-btn" disabled>Top 10 Full</button>`;
-      }
+            let topTenButton = "";
+            if (isTopTen) {
+                topTenButton = `<button class="toggle-top-ten-btn" onclick="toggleTopTen(${movie.id})">Remove from Top 10</button>`;
+            } else if (canAdd) {
+                topTenButton = `<button class="toggle-top-ten-btn" onclick="toggleTopTen(${movie.id})">Add to Top 10</button>`;
+            } else {
+                topTenButton = `<button class="toggle-top-ten-btn" disabled>Top 10 Full</button>`;
+            }
 
-      const posterUrl = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : movie.posterUrl || '';
-      movieEl.innerHTML = `
+            const posterUrl = movie.poster_path
+                ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+                : movie.posterUrl || "";
+            movieEl.innerHTML = `
         <img src="${posterUrl}" alt="${movie.title}">
         <button class="remove-btn" onclick="removeMovie(${movie.id})">X</button>
         <div class="movie-card-btns">
           ${topTenButton}
         </div>
       `;
-      allMoviesContainer.appendChild(movieEl);
-    });
-  }
-
-  window.toggleTopTen = function (movieId) {
-    const index = topTen.indexOf(movieId);
-    if (index > -1) {
-      // remove from top ten
-      topTen.splice(index, 1);
-    } else {
-      // add to top ten
-      if (topTen.length < 10) {
-        topTen.push(movieId);
-      } else {
-        alert(
-          "The Top 10 list is full. Please remove a movie before adding a new one."
-        );
-        return;
-      }
+            allMoviesContainer.appendChild(movieEl);
+        });
     }
     renderTopTen();
     saveTopTen();
@@ -139,35 +127,133 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  addMovieBtn.addEventListener("click", () => {
-    const title = newMovieTitleInput.value.trim();
-    const posterUrl = newMoviePosterInput.value.trim();
-    
-    if (title && posterUrl && !movies.some((m) => m.title === title)) {
-      // Create a temporary ID for the new movie
-      const newMovie = {
-        id: Date.now(), // temporary ID
-        title: title,
-        poster_path: posterUrl,
-        overview: '',
-        release_date: new Date().toISOString().split('T')[0],
-        vote_average: 0,
-        vote_count: 0
-      };
-      
-      movies.push(newMovie);
-      renderAllMovies();
-      newMovieTitleInput.value = "";
-      newMoviePosterInput.value = "";
-      alert('Note: This movie is added temporarily. To persist it, you need to implement backend functionality.');
-    } else {
-      alert("Please provide a unique title and a poster URL.");
+    window.toggleTopTen = function (movieId) {
+        const index = topTen.indexOf(movieId);
+        if (index > -1) {
+            topTen.splice(index, 1);
+        } else {
+            if (topTen.length < 10) {
+                topTen.push(movieId);
+            } else {
+                alert(
+                    "The Top 10 list is full. Please remove a movie before adding a new one."
+                );
+                return;
+            }
+        }
+        renderTopTen();
+        saveTopTenToDatabase();
+    };
+
+    addMovieBtn.addEventListener("click", async () => {
+        const tmdbId = newMovieTmdbIdInput.value.trim();
+
+        if (!tmdbId) {
+            alert("Please provide a TMDB ID.");
+            return;
+        }
+
+        if (movies.some((m) => m.tmdb_id == tmdbId)) {
+            alert("A movie with this TMDB ID already exists.");
+            return;
+        }
+
+        try {
+            addMovieBtn.disabled = true;
+            addMovieBtn.textContent = "Adding...";
+
+            const response = await fetch("/api/movies", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN":
+                        document
+                            .querySelector('meta[name="csrf-token"]')
+                            ?.getAttribute("content") || "",
+                },
+                body: JSON.stringify({
+                    tmdb_id: tmdbId,
+                }),
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                movies.push(data.data);
+                renderAllMovies();
+                newMovieTmdbIdInput.value = "";
+                console.log("Movie added successfully");
+            } else {
+                alert("Failed to add movie: " + data.message);
+            }
+        } catch (error) {
+            console.error("Error adding movie:", error);
+            alert("Error adding movie. Please try again.");
+        } finally {
+            addMovieBtn.disabled = false;
+            addMovieBtn.textContent = "Add Movie";
+        }
+    });
+
+    async function saveTopTenToDatabase() {
+        try {
+            const response = await fetch("/api/top-ten", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN":
+                        document
+                            .querySelector('meta[name="csrf-token"]')
+                            ?.getAttribute("content") || "",
+                },
+                body: JSON.stringify({ movieIds: topTen }),
+            });
+
+            const data = await response.json();
+
+            if (!data.success) {
+                console.error("Failed to save top 10:", data.message);
+                alert("Failed to save changes: " + data.message);
+            } else {
+                console.log("Top 10 saved successfully");
+            }
+        } catch (error) {
+            console.error("Error saving top 10:", error);
+            alert("Error saving changes. Please try again.");
+        }
     }
-  });
 
-  function saveTopTen() {
-    localStorage.setItem('topTenMovies', JSON.stringify(topTen));
-  }
+    const resetTopTenBtn = document.getElementById("reset-top-ten-btn");
+    if (resetTopTenBtn) {
+        resetTopTenBtn.addEventListener("click", async () => {
+            try {
+                const response = await fetch("/api/top-ten/reset", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN":
+                            document
+                                .querySelector('meta[name="csrf-token"]')
+                                ?.getAttribute("content") || "",
+                    },
+                });
 
-  fetchData();
+                const data = await response.json();
+
+                if (data.success) {
+                    topTen = data.data.map((movie) => movie.id);
+                    renderTopTen();
+                    renderAllMovies();
+                    console.log("Top 10 reset successfully");
+                } else {
+                    alert("Failed to reset Top 10: " + data.message);
+                }
+            } catch (error) {
+                console.error("Error resetting Top 10:", error);
+                alert("Error resetting Top 10. Please try again.");
+            }
+        });
+    }
+
+    fetchData();
 });
