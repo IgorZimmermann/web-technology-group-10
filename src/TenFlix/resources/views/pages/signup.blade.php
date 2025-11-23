@@ -6,21 +6,20 @@
     <link rel="stylesheet" href="/css/style.css" />
 @endpush
 
-@if ($errors->any())
-    <div style="background: #f8d7da; color: #721c24; padding: 10px; margin-bottom: 15px;">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
-
 @section('body')
     <div class="login">
         <div class="login-header">
             <h1>Register</h1>
         </div>
+        @if ($errors->any())
+            <div style="background: #f8d7da; color: #721c24; padding: 10px; margin-bottom: 15px; border-radius: 4px;">
+                <ul style="margin: 0; padding-left: 20px;">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <form id="loginForm" method="POST" action="/signup">
             @csrf
             <div class="form-group-1">
@@ -39,7 +38,7 @@
         </form>
 
         <div class="signup-link">
-            Already have an account? <a href="/login.html">Sign in</a>
+            Already have an account? <a href="/login">Sign in</a>
         </div>
     </div>
 @endsection
