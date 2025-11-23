@@ -3,10 +3,17 @@
 @section('title', 'TenFlix')
 
 @push('styles')
-  <link rel="stylesheet" href="/css/home.css">
+
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/watchlist.css">
+    <link rel="stylesheet" href="/css/modal.css">
   <link rel="stylesheet" href="/css/watchlist.css">
   <link rel="stylesheet" href="/css/topten.css">
 @endpush
+
+@section('head')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+@endsection
 
 @section('body')
 
@@ -36,7 +43,7 @@
             data-poster="{{ $movie->poster_path ? 'https://image.tmdb.org/t/p/original'.$movie->poster_path : '' }}"
           >
             <img src="https://image.tmdb.org/t/p/original{{ $movie->poster_path }}" alt="{{ $movie->title }} - #{{ $loop->iteration }}">
-            <span class="heart" aria-label="Add {{ $movie->title }} to watchlist">
+            <span class="heart watchlist-button" aria-label="Add {{ $movie->title }} to watchlist" data-id="{{ $movie->tmdb_id }}">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
                 <path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"
                   d="M11.648 3.159c1.89-1.848 4.953-1.848 6.843 0 1.89 1.847 1.89 4.84 0 6.688l-7.07 6.908a.75.75 0 0 1-1.042 0l-7.07-6.908c-1.89-1.848-1.89-4.84 0-6.688 1.89-1.848 4.953-1.848 6.843 0l.748.731.748-.731z"/>
@@ -69,7 +76,7 @@
             data-poster="{{ $movie->poster_path ? 'https://image.tmdb.org/t/p/original'.$movie->poster_path : '' }}"
           >
               <img src="https://image.tmdb.org/t/p/original{{ $movie->poster_path }}" alt="{{ $movie->title }} poster">
-            <span class="heart" aria-label="Add {{ $movie->title }} to watchlist">
+            <span class="heart watchlist-button" data-id={{ $movie->tmdb_id }} aria-label="Add {{ $movie->title }} to watchlist">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
                 <path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"
                   d="M11.648 3.159c1.89-1.848 4.953-1.848 6.843 0 1.89 1.847 1.89 4.84 0 6.688l-7.07 6.908a.75.75 0 0 1-1.042 0l-7.07-6.908c-1.89-1.848-1.89-4.84 0-6.688 1.89-1.848 4.953-1.848 6.843 0l.748.731.748-.731z"/>
@@ -99,7 +106,7 @@
             data-poster="{{ $movie->poster_path ? 'https://image.tmdb.org/t/p/original'.$movie->poster_path : '' }}"
           >
               <img src="https://image.tmdb.org/t/p/original{{ $movie->poster_path }}" alt="{{ $movie->title }} poster">
-            <span class="heart" aria-label="Add {{ $movie->title }} to watchlist">
+            <span class="heart watchlist-button" data-id="{{ $movie->tmdb_id }}" aria-label="Add {{ $movie->title }} to watchlist">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
                 <path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"
                   d="M11.648 3.159c1.89-1.848 4.953-1.848 6.843 0 1.89 1.847 1.89 4.84 0 6.688l-7.07 6.908a.75.75 0 0 1-1.042 0l-7.07-6.908c-1.89-1.848-1.89-4.84 0-6.688 1.89-1.848 4.953-1.848 6.843 0l.748.731.748-.731z"/>
@@ -107,14 +114,6 @@
             </span>
           </div>
         @endforeach
-      </div>
-    </section>
-
-    <!-- WATCHLIST SECTION -->
-    <section class="section">
-      <h1 id="watchlist-title">Watchlist</h1>
-      <div id="watchList">
-        <p id="emptyMsg">No movies yet</p>
       </div>
     </section>
 
@@ -136,7 +135,7 @@
             data-poster="{{ $movie->poster_path ? 'https://image.tmdb.org/t/p/original'.$movie->poster_path : '' }}"
           >
               <img src="https://image.tmdb.org/t/p/original{{ $movie->poster_path }}" alt="{{ $movie->title }} poster">
-            <span class="heart" aria-label="Add {{ $movie->title }} to watchlist">
+            <span class="heart watchlist-button" data-id={{ $movie->tmdb_id }} aria-label="Add {{ $movie->title }} to watchlist">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
                 <path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"
                   d="M11.648 3.159c1.89-1.848 4.953-1.848 6.843 0 1.89 1.847 1.89 4.84 0 6.688l-7.07 6.908a.75.75 0 0 1-1.042 0l-7.07-6.908c-1.89-1.848-1.89-4.84 0-6.688 1.89-1.848 4.953-1.848 6.843 0l.748.731.748-.731z"/>
@@ -165,7 +164,7 @@
             data-poster="{{ $movie->poster_path ? 'https://image.tmdb.org/t/p/original'.$movie->poster_path : '' }}"
           >
               <img src="https://image.tmdb.org/t/p/original{{ $movie->poster_path }}" alt="{{ $movie->title }} poster">
-            <span class="heart" aria-label="Add {{ $movie->title }} to watchlist">
+            <span class="heart watchlist-button" data-id={{ $movie->tmdb_id }} aria-label="Add {{ $movie->title }} to watchlist">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
                 <path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"
                   d="M11.648 3.159c1.89-1.848 4.953-1.848 6.843 0 1.89 1.847 1.89 4.84 0 6.688l-7.07 6.908a.75.75 0 0 1-1.042 0l-7.07-6.908c-1.89-1.848-1.89-4.84 0-6.688 1.89-1.848 4.953-1.848 6.843 0l.748.731.748-.731z"/>
@@ -176,10 +175,32 @@
       </div>
     </section>
   </main>
+
+  <!-- MOVIE MODAL -->
+  <div id="movieModal" class="modal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" data-modal-title>Movie Title</h2>
+        <button class="modal-close" data-modal-close>×</button>
+      </div>
+      <img class="modal-poster" data-modal-poster src="" alt="Movie poster">
+      <div class="modal-meta">
+        <div data-modal-release>Release date</div>
+        <div data-modal-genre>Genre</div>
+        <div data-modal-rating>Rating</div>
+        <div data-modal-votes>Votes</div>
+      </div>
+      <p class="modal-overview" data-modal-overview>Overview text</p>
+      <button class="modal-watchlist" data-modal-watchlist>Add to Watchlist</button>
+    </div>
+  </div>
 @endsection
 
 @push('scripts')
+    <script src="/js/script.js" defer></script>
+    <script src="/js/movie-modal.js" defer></script>
+    <script src="/js/search.js" defer></script>
+  <script src="/js/watchlist.js" defer></script>
   <script src="/js/topten.js" defer></script>
-  <script src="/js/script.js" defer></script>
-  <script src="/js/movie-modal.js" defer></script>
 @endpush

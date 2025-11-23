@@ -4,12 +4,15 @@
   <meta charset="utf-8">
   <!-- allows for dynamic viewing -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
 
   <title>@yield('title','TenFlix')</title>
 
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap">
   <link rel="stylesheet" href="/css/modal.css">
   @stack('styles')
+
+  @yield('head')
 </head>
 
 <body>
