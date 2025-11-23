@@ -88,6 +88,18 @@ Route::post('/logout', [LoginController::class, 'logout']);
 
 Route::post('/watchlist', [WatchlistController::class, 'setWatchlist']);
 Route::post('/watched', [WatchlistController::class, 'setWatched']);
+Route::get('/api/watchlist-status', function (\Illuminate\Http\Request $request) {
+    $movieId = $request->query('id');
+    
+    if (!Auth::check() || !$movieId) {
+        return response()->json(['inWatchlist' => false]);
+    }
+    
+    $userWatchlist = Auth::user()->watchlist ?? '';
+    $watchlistIds = array_filter(explode(',', $userWatchlist), fn($id) => strlen($id) > 0);
+    
+    return response()->json(['inWatchlist' => in_array((string)$movieId, $watchlistIds)]);
+});
 
 Route::get('/admin.html', function () {
     $movies = Movie::all();
@@ -115,6 +127,7 @@ Route::get('/api/search', function (\Illuminate\Http\Request $request) {
         ->map(function ($movie) {
             return [
                 'id' => $movie->id,
+                'tmdb_id' => $movie->tmdb_id,
                 'title' => $movie->title,
                 'poster_path' => $movie->poster_path,
                 'release_date' => $movie->release_date,

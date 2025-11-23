@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const poster = movie.poster_path ? `https://image.tmdb.org/t/p/w92${movie.poster_path}` : 'https://via.placeholder.com/92x138?text=No+Image';
         return `
         <div class="search-result-item"
+          data-id="${movie.tmdb_id}"
           data-title="${movie.title}"
           data-poster="${movie.poster_path || ''}"
           data-release="${movie.release_date || 'N/A'}"
@@ -51,6 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('.search-result-item').forEach(item => {
         item.addEventListener('click', () => {
           const movieData = {
+                        id: item.dataset.id,
             title: item.dataset.title,
             poster: item.dataset.poster,
             releaseDate: item.dataset.release,

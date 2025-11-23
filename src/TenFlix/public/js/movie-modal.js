@@ -14,6 +14,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const watchlistBtn = modal.querySelector("[data-modal-watchlist]");
 
     let activeCard = null;
+    let currentMovieId = null;
+    let isInWatchlist = false;
 
     // get the heart of the activeCard
     const getSourceHeart = () => activeCard?.querySelector(".heart") || null;
@@ -23,7 +25,9 @@ document.addEventListener("DOMContentLoaded", () => {
         // prevents crashing if it does not exist
         if (!watchlistBtn) return;
         const sourceHeart = getSourceHeart();
-        const isActive = !!sourceHeart?.classList.contains("active");
+        const isActive = sourceHeart
+            ? sourceHeart.classList.contains("active")
+            : isInWatchlist;
         // if its active toggle the button
         watchlistBtn.classList.toggle("is-active", isActive);
         // change the text
@@ -79,6 +83,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const closeModal = () => {
         modal.classList.remove("is-visible");
         activeCard = null;
+        currentMovieId = null;
+        isInWatchlist = false;
         syncWatchlistButton();
     };
 
@@ -96,12 +102,82 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // toggle activeCard by calling .click() function
     if (watchlistBtn) {
-        watchlistBtn.addEventListener("click", () => {
-            if (!activeCard) return;
-            const sourceHeart = getSourceHeart();
-            if (sourceHeart) {
-                sourceHeart.click();
-                syncWatchlistButton();
+        watchlistBtn.addEventListener("click", async () => {
+            if (activeCard) {
+                const sourceHeart = getSourceHeart();
+                if (sourceHeart) {
+                    sourceHeart.click();
+                    syncWatchlistButton();
+                }
+                return;
+            }
+
+            if (!currentMovieId) return;
+
+            try {
+                const response = await fetch("/watchlist", {
+                    body: JSON.stringify({ id: currentMovieId }),
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": document
+                            .querySelector('meta[name="csrf-token"]')
+                            .getAttribute("content"),
+                    },
+                });
+
+                if (response.ok) {
+                    isInWatchlist = !isInWatchlist;
+                    syncWatchlistButton();
+
+                    const matchingHearts = document.querySelectorAll(
+                        `[data-id="${currentMovieId}"]`
+                    );
+                    matchingHearts.forEach((heart) => {
+                        if (isInWatchlist) {
+                            heart.classList.add("active");
+                            const card = heart.closest(".movie-card");
+                            if (card) {
+                                const title = card.getAttribute("data-title");
+                                const watchList =
+                                    document.getElementById("watchList");
+                                if (
+                                    watchList &&
+                                    !watchList.querySelector(
+                                        `[data-title="${title}"]`
+                                    )
+                                ) {
+                                    const clone = card.cloneNode(true);
+                                    clone.querySelector(".heart")?.remove();
+                                    clone.classList.remove("menu-item");
+                                    watchList.appendChild(clone);
+                                }
+                            }
+                        } else {
+                            heart.classList.remove("active");
+                            const card = heart.closest(".movie-card");
+                            if (card) {
+                                const title = card.getAttribute("data-title");
+                                const watchList =
+                                    document.getElementById("watchList");
+                                const removedMovie = watchList?.querySelector(
+                                    `[data-title="${title}"]`
+                                );
+                                if (removedMovie) removedMovie.remove();
+                            }
+                        }
+                    });
+
+                    const emptyMsg = document.getElementById("emptyMsg");
+                    if (emptyMsg) {
+                        const watchList = document.getElementById("watchList");
+                        const hasMovies =
+                            watchList?.querySelector(".movie-card");
+                        emptyMsg.style.display = hasMovies ? "none" : "block";
+                    }
+                }
+            } catch (error) {
+                console.error("Error toggling watchlist:", error);
             }
         });
     }
@@ -114,7 +190,8 @@ document.addEventListener("DOMContentLoaded", () => {
         openModalFromCard(card);
     });
 
-    window.openMovieModal = (movieData) => {
+    window.openMovieModal = async (movieData) => {
+        currentMovieId = movieData.id || null;
         const data = {
             title: movieData.title,
             poster: movieData.poster,
@@ -125,6 +202,26 @@ document.addEventListener("DOMContentLoaded", () => {
             voteCount: movieData.voteCount,
         };
         populateModal(data);
+
+        if (currentMovieId) {
+            try {
+                const response = await fetch(
+                    "/api/watchlist-status?id=" + currentMovieId
+                );
+                if (response.ok) {
+                    const result = await response.json();
+                    isInWatchlist = result.inWatchlist || false;
+                } else {
+                    isInWatchlist = false;
+                }
+            } catch (error) {
+                console.error("Error checking watchlist status:", error);
+                isInWatchlist = false;
+            }
+        } else {
+            isInWatchlist = false;
+        }
+
         showModal();
     };
 });
