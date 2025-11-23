@@ -47,4 +47,5 @@
 
 @push('scripts')
     <script src="/js/watchlist.js" defer></script>
+    <script src="/js/movie-modal.js" defer></script>
 @endpush
