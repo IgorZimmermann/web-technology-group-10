@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\SignupController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\TopTenController;
+use App\Http\Controllers\MovieController;
 use App\Http\Controllers\WatchlistController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -11,7 +13,7 @@ use App\Models\User;
 Route::get('/', function () {
     $movies = Movie::all();
     $bannerMovie = Movie::orderBy('vote_count', 'desc')->first();
-    $topMovies = Movie::orderBy('vote_count', 'desc')->take(10)->get();
+    $topMovies = Movie::getTopTen();
     $actionMovies = Movie::where('genre', 'like', '%Action%')
         ->orderBy('vote_count', 'desc')
         ->take(12)
@@ -62,8 +64,8 @@ Route::get('/admin', function () {
         return redirect('/');
     }
 
-    $movies = Movie::all();
-    $topTenMovies = Movie::orderBy('vote_count', 'desc')->take(10)->get();
+    $movies = Movie::orderBy('id', 'asc')->get();
+    $topTenMovies = Movie::getTopTen();
 
     return view('pages.admin', [
         'movies' => $movies,
@@ -89,10 +91,16 @@ Route::post('/watched', [WatchlistController::class, 'setWatched']);
 
 Route::get('/admin.html', function () {
     $movies = Movie::all();
-    $topTenMovies = Movie::orderBy('vote_count', 'desc')->take(10)->get();
+    $topTenMovies = Movie::getTopTen();
     return view('pages.admin', ['movies' => $movies, 'topTenMovies' => $topTenMovies]);
 });
 
+Route::get('/api/top-ten', [TopTenController::class, 'index']);
+Route::post('/api/top-ten', [TopTenController::class, 'update']);
+Route::post('/api/top-ten/reset', [TopTenController::class, 'reset']);
+
+Route::post('/api/movies', [MovieController::class, 'store']);
+Route::delete('/api/movies/{id}', [MovieController::class, 'destroy']);
 // Search API endpoint
 Route::get('/api/search', function (\Illuminate\Http\Request $request) {
     $query = $request->query('q', '');
