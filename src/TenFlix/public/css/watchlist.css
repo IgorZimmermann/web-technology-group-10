@@ -1,119 +1,169 @@
 body {
-  font-family: Arial, sans-serif;
-  background: #111;
-  color: white;
-  margin: 0;
-  padding: 0.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    font-family: Arial, sans-serif;
+    background: #111;
+    color: white;
+    margin: 0;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 #pageHeader {
-  width: 100%;
-  padding: 2rem;
+    width: 100%;
+    padding: 2rem;
 }
 
 #pageHeader a {
-  position: fixed;
-  top: 15px;
-  left: 20px;
-  font-size: large;
-  font-family: 'Roboto', sans-serif;
-  color: #fff;
-  text-transform: capitalize;
-  text-decoration: none;
+    position: fixed;
+    top: 15px;
+    left: 20px;
+    font-size: large;
+    font-family: "Roboto", sans-serif;
+    color: #fff;
+    text-transform: capitalize;
+    text-decoration: none;
 }
 
 #pageHeader h1 {
-  margin: 0;
-  margin-bottom: 0.5rem;
+    margin: 0;
+    margin-bottom: 0.5rem;
 }
 
 .movie-grid {
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 0.5rem;
-  padding: 1rem;
-  overflow-x: auto;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+    padding: 1rem;
+    overflow-x: auto;
 }
 
-.movie-grid::-webkit-scrollbar { display: none; }
+.movie-grid::-webkit-scrollbar {
+    display: none;
+}
 
 .movie-card {
-  position: relative;
-  flex: 0 0 auto;
-  width: 10rem;
-  aspect-ratio: 2/3;
-  overflow: hidden;
-  cursor: pointer;
-  margin: 0;
-  border-radius: 0.7rem;
+    position: relative;
+    flex: 0 0 auto;
+    width: 10rem;
+    aspect-ratio: 2/3;
+    overflow: hidden;
+    cursor: pointer;
+    margin: 0;
+    border-radius: 0.7rem;
 }
 
 .movie-card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-.movie-card img { transition: transform 0.25s ease; }
-.movie-card:hover img { transform: scale(1.03); }
+.movie-card img {
+    transition: transform 0.25s ease;
+}
+.movie-card:hover img {
+    transform: scale(1.03);
+}
 
-.heart {
-  position: absolute;
-  top: 0.5em;
-  right: 0.5em;
-  width: 2.5rem;
-  height: 2.5rem;
-  background: rgba(0,0,0,0.6);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.tick {
+    position: absolute;
+    z-index: 20;
+    top: 0.5em;
+    left: 0.5em;
+    width: 2.5rem;
+    height: 2.5rem;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-  /* invisible by deafult */
-  opacity: 0;
-  transition: opacity 0.3s, transform 0.2s;
-  cursor: pointer;
+    /* invisible by deafult */
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.2s;
+    cursor: pointer;
 }
 
 /* Makes it appear */
-.movie-card:hover .heart { opacity: 1; }
+.movie-card:hover .tick {
+    opacity: 1;
+}
+
+.tick svg {
+    width: 70%;
+    height: 70%;
+    display: block;
+    color: #fff;
+    transform: translateX(4%) translateY(13%);
+}
+
+.tick.active svg {
+    color: green;
+    transform: translateX(3%) translateY(12%) scale(1.1);
+}
+
+.heart {
+    position: absolute;
+    top: 0.5em;
+    z-index: 20;
+    right: 0.5em;
+    width: 2.5rem;
+    height: 2.5rem;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* invisible by deafult */
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.2s;
+    cursor: pointer;
+}
+
+/* Makes it appear */
+.movie-card:hover .heart {
+    opacity: 1;
+}
 
 .heart svg {
-  width: 70%;
-  height: 70%;
-  display: block;
-  color: #fff;
-  transform: translateX(4%) translateY(13%);
+    width: 70%;
+    height: 70%;
+    display: block;
+    color: #fff;
+    transform: translateX(4%) translateY(13%);
 }
 
 .heart.active svg {
-  color: red;
-  transform: translateX(3%) translateY(12%) scale(1.1);
+    color: red;
+    transform: translateX(3%) translateY(12%) scale(1.1);
 }
 
 #watchList {
-  display: flex;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  gap: 0.5rem;
-  width: 80%;
-  margin-top: 1rem;
-  padding: 2rem;
-  border: 1px solid black;
-  border-radius: 0.5rem;
-  background: #1f1f1f;
-  scroll-behavior: smooth;
-  justify-content: flex-start;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 0.5rem;
+    width: 80%;
+    margin-top: 1rem;
+    padding: 2rem;
+    border: 1px solid black;
+    border-radius: 0.5rem;
+    background: #1f1f1f;
+    scroll-behavior: smooth;
+    justify-content: flex-start;
 }
-#watchList::-webkit-scrollbar { display: none; }
+#watchList::-webkit-scrollbar {
+    display: none;
+}
 
 #watchList h1 {
-  margin: 0;
-  margin-bottom: 0.5rem;
-  /* (kept original comment about page order) */
+    margin: 0;
+    margin-bottom: 0.5rem;
+    /* (kept original comment about page order) */
 }
 
-#emptyMsg { color: #aaa; }
+#emptyMsg {
+    color: #aaa;
+}
