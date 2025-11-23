@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\SignupController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\MovieController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Movie;
@@ -68,3 +69,7 @@ Route::get('/admin.html', function () {
     $topTenMovies = Movie::orderBy('vote_count', 'desc')->take(10)->get();
     return view('pages.admin', ['movies' => $movies, 'topTenMovies' => $topTenMovies]);
 });
+
+Route::delete('/admin/movies/{movie}', [MovieController::class, 'destroy'])
+    ->middleware('auth')
+    ->name('admin.movies.destroy');

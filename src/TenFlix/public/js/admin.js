@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const addMovieBtn = document.getElementById("add-movie-btn");
   const newMovieTitleInput = document.getElementById("new-movie-title");
   const newMoviePosterInput = document.getElementById("new-movie-poster");
+  const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute("content");
 
   let movies = [];
   let topTen = [];
@@ -113,12 +114,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.removeMovie = function (movieId) {
     if (confirm('Are you sure you want to remove this movie?')) {
-      movies = movies.filter((movie) => movie.id !== movieId);
-      topTen = topTen.filter((id) => id !== movieId);
-      renderAllMovies();
-      renderTopTen();
-      saveTopTen();
-      alert('Note: This only removes the movie from this session. Refresh the page to see all movies again.');
+      fetch(`/admin/movies/${movieId}`, {
+        method: "DELETE",
+        headers: {
+          "X-CSRF-TOKEN": csrfToken || "",
+          Accept: "application/json",
+        },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Failed to delete movie");
+          }
+          movies = movies.filter((movie) => movie.id !== movieId);
+          topTen = topTen.filter((id) => id !== movieId);
+          renderAllMovies();
+          renderTopTen();
+          saveTopTen();
+          alert("Movie deleted.");
+        })
+        .catch((error) => {
+          console.error(error);
+          alert("Could not delete movie. Please try again.");
+        });
     }
   };
 
