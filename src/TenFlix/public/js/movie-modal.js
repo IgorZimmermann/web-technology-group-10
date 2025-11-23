@@ -1,4 +1,4 @@
-// runs this code after the DOM is ready
+// runs this code afte rthe 
 document.addEventListener('DOMContentLoaded', () => {
   const modal = document.getElementById('movieModal');
   if (!modal) return;
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // get the heart of the activeCard
   const getSourceHeart = () => activeCard?.querySelector('.heart') || null;
 
-  // helper method to toggle the 'Remove / Add to Watchlist' functionality
+  // helper method to toggle the 'Remove / Add to Watchlist' funcitonality 
   const syncWatchlistButton = () => {
     // prevents crashing if it does not exist
     if (!watchlistBtn) return;
@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     watchlistBtn.classList.toggle('is-active', isActive);
     // change the text
     watchlistBtn.textContent = isActive ? 'Remove from Watchlist' : 'Add to Watchlist';
+
   };
 
   // helper method to populate the Modal Box
@@ -47,9 +48,9 @@ document.addEventListener('DOMContentLoaded', () => {
     overviewEl.textContent = overview || 'No overview available.';
   };
 
-  // Helper methods to help with opening / closing the modal
+  // Helper methods to help with opening / closing the model
 
-  // edits the css to show
+  // edits the css to show 
   const showModal = () => {
     modal.classList.add('is-visible');
     syncWatchlistButton();
@@ -66,16 +67,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const openModalFromCard = (card) => {
     activeCard = card;
     populateModal({ ...card.dataset });
-    showModal();
-  };
-
-  // expose a simple global helper so other scripts (search) can open the modal
-  // without creating DOM movie-card elements. Accepts the same fields as
-  // populateModal: { title, overview, releaseDate, rating, voteCount, poster, genre }
-  window.openMovieModal = (data = {}) => {
-    // ensure activeCard is null so watchlist sync doesn't rely on a card
-    activeCard = null;
-    populateModal(data);
     showModal();
   };
 
@@ -96,10 +87,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // opens a modal check if its either movie card
+  // opens a model check if its either movie card 
   document.addEventListener('click', (event) => {
     const card = event.target.closest('.movie-card');
-    // if its the heart it does nothing / does not open modal
+    // if its the heart it does nothing / does not open model
     if (!card || event.target.closest('.heart')) return;
     openModalFromCard(card);
   });
