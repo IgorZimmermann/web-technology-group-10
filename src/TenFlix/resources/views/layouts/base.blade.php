@@ -36,19 +36,15 @@
                     @endauth
                 </div>
                 <div class="navbar-link-wrapper navbar-center">
-                    <!-- SEARCH BAR IN NAVBAR -->
-            <div style="position: relative; flex: 1; max-width: 300px;">
-                <input type="text" id="searchInput" placeholder="Search movies..."
-                    style="width: 100%; padding: 8px 12px; font-size: 14px; border: 1px solid #ddd; border-radius: 6px; outline: none; transition: border-color 0.3s;">
-                <div id="searchResults" style="position: absolute; width: 100%; top: 100%; left: 0; margin-top: 5px; background: white; border: 1px solid #ddd; border-radius: 6px; max-height: 400px; overflow-y: auto; display: none; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.1);"></div>
-            </div>
+                    <input type="text" id="searchInput" placeholder="Search movies...">
+                    <div id="searchResults" class="searchResult"></div>
                 </div>
                 <div class="navbar-link-wrapper">
-                    <a href="" class="navbar-oval-btn">Watchlist</a>
+                    <a href="/watchlist" class="navbar-oval-btn">Watchlist</a>
                 <div class="navbar-link-wrapper">
                     @auth
                         <span>{{ Auth::user()->name }}</span>
-                        <form method="POST" action="/logout" style="display: inline; margin: 0;">
+                        <form method="POST" action="/logout" class="navbar-oval-btn" style="display: inline; margin: 0;">
                             @csrf
                             <button type="submit">logout</button>
                         </form>

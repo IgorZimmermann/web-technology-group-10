@@ -180,10 +180,9 @@
 }
 
 .navbar-center {
-    flex: 1 1 0;
-    justify-content: center;
-    display: flex;
-    min-width: 0;
+    position: relative;
+    flex: 1;
+    max-width: 300px
 }
 
 #searchInput {
@@ -198,6 +197,22 @@
     background: #2f2f2f;
     color: #fff;
     caret-color: #fff
+}
+
+.searchResult{
+    position: absolute;
+    width: 100%;
+    top: 100%;
+    left: 0;
+    margin-top: 5px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    max-height: 400px;
+    overflow-y: auto;
+    display: none;
+    z-index: 100;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 .logo{
