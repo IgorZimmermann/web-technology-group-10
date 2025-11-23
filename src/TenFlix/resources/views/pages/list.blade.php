@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="/css/home.css">
     <link rel="stylesheet" href="/css/watchlist.css">
     <link rel="stylesheet" href="/css/topten.css">
+    <link rel="stylesheet" href="/css/modal.css">
 @endpush
 
 @section('head')
@@ -13,35 +14,9 @@
 @endsection
 
 @section('body')
-    <nav class="navbar">
-        <div class="navbar-wrapper">
-            <div class="navbar-link-wrapper">
-                <a href="">home</a>
-                @auth
-                    @if (Auth::user()->is_admin)
-                        <a href="/admin">admin</a>
-                    @endif
-                @endauth
-            </div>
-            <div>
-                <img src="/img/logo.png" class="logo">
-            </div>
-            <div class="navbar-link-wrapper">
-                @auth
-                    <span>{{ Auth::user()->name }}</span>
-                    <form method="POST" action="/logout" style="display: inline; margin: 0;">
-                        @csrf
-                        <button type="submit">logout</button>
-                    </form>
-                @else
-                    <a href="/login">login</a>
-                @endauth
-            </div>
-        </div>
-    </nav>
     <main class="content-wrapper">
         <section class="section" aria-labelledby="top-ten-title">
-            <h2 id="top-ten-title" style="text-align: center; margin: 50px 0;">{{$listTitle}}</h2>
+            <h1 id="top-ten-title" style="text-align: center; margin: 50px 0;">{{$listTitle}}</h1>
             <div class="menu">
                 @foreach($movies as $movie)
                 <div

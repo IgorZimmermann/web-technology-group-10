@@ -40,11 +40,11 @@
                     <div id="searchResults" class="searchResult"></div>
                 </div>
                 <div class="navbar-link-wrapper">
-                    <a href="" class="navbar-oval-btn">Watchlist</a>
+                    <a href="/watchlist" class="navbar-oval-btn">Watchlist</a>
                 <div class="navbar-link-wrapper">
                     @auth
                         <span>{{ Auth::user()->name }}</span>
-                        <form method="POST" action="/logout" style="display: inline; margin: 0;">
+                        <form method="POST" action="/logout" class="navbar-oval-btn" style="display: inline; margin: 0;">
                             @csrf
                             <button type="submit">logout</button>
                         </form>
