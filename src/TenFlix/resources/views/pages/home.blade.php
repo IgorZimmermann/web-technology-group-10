@@ -16,38 +16,7 @@
 @endsection
 
 @section('body')
-    <nav class="navbar">
-        <div class="navbar-wrapper">
-            <div class="navbar-link-wrapper">
-                <a href="">home</a>
-                @auth
-                    @if (Auth::user()->is_admin)
-                        <a href="/admin">admin</a>
-                    @endif
-                @endauth
-            </div>
-            <!-- SEARCH BAR IN NAVBAR -->
-            <div style="position: relative; flex: 1; max-width: 300px;">
-                <input type="text" id="searchInput" placeholder="Search movies..."
-                    style="width: 100%; padding: 8px 12px; font-size: 14px; border: 1px solid #ddd; border-radius: 6px; outline: none; transition: border-color 0.3s;">
-                <div id="searchResults" style="position: absolute; width: 100%; top: 100%; left: 0; margin-top: 5px; background: white; border: 1px solid #ddd; border-radius: 6px; max-height: 400px; overflow-y: auto; display: none; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.1);"></div>
-            </div>
-            <div>
-                <img src="/img/logo.png" class="logo">
-            </div>
-            <div class="navbar-link-wrapper">
-                @auth
-                    <span>{{ Auth::user()->name }}</span>
-                    <form method="POST" action="/logout" style="display: inline; margin: 0;">
-                        @csrf
-                        <button type="submit">logout</button>
-                    </form>
-                @else
-                    <a href="/login">login</a>
-                @endauth
-            </div>
-        </div>
-    </nav>
+
     <main class="content-wrapper">
         <div class="content" style="background-image: url('{{$bannerMovie->poster_path ? 'https://image.tmdb.org/t/p/original'.$bannerMovie->poster_path : '' }}')">
             <div class="meta-wrapper">
@@ -88,7 +57,7 @@
         <!-- BROWSE GRID -->
         <section class="section" aria-labelledby="browse-title">
         <div id="pageHeader">
-            <a href="/index.html">Home</a>
+            <!--<a href="/index.html">Home</a>-->
             <h1 id="browse-title" style="text-align: center;">Browse</h1>
         </div>
 
