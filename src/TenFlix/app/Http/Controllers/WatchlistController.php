@@ -4,10 +4,51 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use App\Models\User;
 
 class WatchlistController extends Controller {
+
+
+    public function index()
+    {
+        $userWatchlist = Auth::user()->watchlist ?? '';
+        $ids = array_filter(explode(',', $userWatchlist))
+
+        $movies = Movie::whereIn('tmdb_id', $ids)->get();
+
+        return view('page.list', [
+            'listTitle' => 'Watchlist',
+            'movies' => $movies,
+        ]);
+    }
+
+    public function seen()
+    {
+        $userWatched = Auth::user()->watched ?? '';
+        $ids = array_filter(explode(',', $userWatched))
+
+        $movies = Movie::whereIn('tmdb_id', $ids)->get();
+
+        return view('page.list', [
+            'listTitle' => 'Watchlist',
+            'movies' => $movies,
+        ]);
+    }
+
+    public function status(Request $request)
+    {
+        $movieId = $request->query('id');
+
+        if (!Auth::check() || !$movieId) {
+            return response()->json(['inWatchlist' => false]);
+        }
+
+        $userWatchlist = Auth::user()->watchlist ?? '';
+        $watchlistIds = array_filter(explode(',', $userWatchlist), fn($id) => strlen($id) > 0);
+
+        return response()->json(['inWatchlist' => in_array((string)$movieId, $watchlistIds)]);
+    }
+
     public function setWatchlist(Request $request) {
         $body = json_decode($request->getContent());
         $id = (string)$body->id;

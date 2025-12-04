@@ -12,10 +12,6 @@ class MovieController extends Controller
 {
     public function destroy(Movie $movie): JsonResponse
     {
-        if (!Auth::check() || !Auth::user()->is_admin) {
-            return response()->json(['message' => 'Forbidden'], 403);
-        }
-
         $movie->delete();
 
         return response()->json(['message' => 'Movie deleted']);
