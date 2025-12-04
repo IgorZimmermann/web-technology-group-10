@@ -21,8 +21,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'watchlist',
-        'watched'
     ];
 
     /**
@@ -46,5 +44,14 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function watchlist()
+    {
+        return $this->belongsToMany(Movie::class, 'user_watchlist');
+    }
+    public function watched()
+    {
+        return $this->belongsToMany(Movie::class, 'user_watched');
     }
 }

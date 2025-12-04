@@ -5,105 +5,102 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Movie;
 
-class WatchlistController extends Controller {
-
-
+class WatchlistController extends Controller
+{
+    // SHOW WATCHLIST PAGE
     public function index()
     {
-        $userWatchlist = Auth::user()->watchlist ?? '';
-        $ids = array_filter(explode(',', $userWatchlist))
+        $movies = Auth::user()->watchlist()->get();
 
-        $movies = Movie::whereIn('tmdb_id', $ids)->get();
-
-        return view('page.list', [
+        return view('pages.list', [
             'listTitle' => 'Watchlist',
-            'movies' => $movies,
+            'movies'    => $movies,
         ]);
     }
 
+    // SHOW WATCHED PAGE
     public function seen()
     {
-        $userWatched = Auth::user()->watched ?? '';
-        $ids = array_filter(explode(',', $userWatched))
+        $movies = Auth::user()->watched()->get();
 
-        $movies = Movie::whereIn('tmdb_id', $ids)->get();
-
-        return view('page.list', [
-            'listTitle' => 'Watchlist',
-            'movies' => $movies,
+        return view('pages.list', [
+            'listTitle' => 'Seen',
+            'movies'    => $movies,
         ]);
     }
 
+    // CHECK IF A MOVIE IS IN WATCHLIST 
     public function status(Request $request)
     {
-        $movieId = $request->query('id');
+        $tmdbId = (int) $request->query('id');
 
-        if (!Auth::check() || !$movieId) {
+        if (!$tmdbId || !Auth::check()) {
             return response()->json(['inWatchlist' => false]);
         }
 
-        $userWatchlist = Auth::user()->watchlist ?? '';
-        $watchlistIds = array_filter(explode(',', $userWatchlist), fn($id) => strlen($id) > 0);
+        $movieId = Movie::where('tmdb_id', $tmdbId)->value('id');
 
-        return response()->json(['inWatchlist' => in_array((string)$movieId, $watchlistIds)]);
+        if (!$movieId) {
+            return response()->json(['inWatchlist' => false]);
+        }
+
+        $user = Auth::user();
+
+        $inWatchlist = $user->watchlist()->where('movies.id', $movieId)->exists();
+
+        return response()->json(['inWatchlist' => $inWatchlist]);
     }
 
-    public function setWatchlist(Request $request) {
-        $body = json_decode($request->getContent());
-        $id = (string)$body->id;
-
-        if (!Auth::check()) {
-            return 'not authed';
-        }
-
-        $userId = Auth::id();
-        $userWatchlist = Auth::user()->watchlist;
-
-        $splitWatchlist = array_filter(explode(',', $userWatchlist), static function ($elem) {
-            return strlen($elem) > 0;
-        });
-        if (in_array($id, $splitWatchlist)) {
-            $splitWatchlist = array_filter($splitWatchlist, function ($element) use ($id) {
-                return $element != $id;
-            });
-        } else {
-            $splitWatchlist[] = $id;
-        }
-
-        $newWatchlist = implode(',', $splitWatchlist);
-
-        User::where('id',$userId)->update(['watchlist' => $newWatchlist]);
-
-        return "{$newWatchlist}";
+    // TOGGLE WATCHLIST
+    public function setWatchlist(Request $request)
+    {
+        return $this->togglePivot($request, 'watchlist');
     }
 
-    public function setWatched(Request $request) {
-        $body = json_decode($request->getContent());
-        $id = (string)$body->id;
+    // TOGGLE WATCHED
+    public function setWatched(Request $request)
+    {
+        return $this->togglePivot($request, 'watched');
+    }
 
-        if (!Auth::check()) {
-            return 'not authed';
+    // SHARED HELPER FOR WATCHLIST/WATCHED
+    private function togglePivot(Request $request, string $relation)
+    {
+        // turn js JSON request into objects
+        $body   = json_decode($request->getContent() ?: '{}');
+        $tmdbId = isset($body->id) ? (int) $body->id : 0;
+
+        if (!$tmdbId) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid movie id',
+            ], 400);
         }
 
-        $userId = Auth::id();
-        $userWatched = Auth::user()->watched;
+        $movie = Movie::where('tmdb_id', $tmdbId)->first();
 
-        $splitWatched = array_filter(explode(',', $userWatched), static function ($elem) {
-            return strlen($elem) > 0;
-        });
-        if (in_array($id, $splitWatched)) {
-            $splitWatched = array_filter($splitWatched, function ($element) use ($id) {
-                return $element != $id;
-            });
-        } else {
-            $splitWatched[] = $id;
+        if (!$movie) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Movie not found',
+            ], 404);
         }
 
-        $newWatched = implode(',', $splitWatched);
+        $user = Auth::user();
 
-        User::where('id',$userId)->update(['watched' => $newWatched]);
+        $alreadyIn = $user->{$relation}()
+            ->where('movies.id', $movie->id)
+            ->exists();
 
-        return "{$newWatched}";
+        // Laravel pivot helper, if $relation is watchlist it becomes watchlist() and vice versa with watched
+        $user->{$relation}()->toggle($movie->id);
+
+        return response()->json([
+            'success' => true,
+            'status'  => $alreadyIn ? 'removed' : 'added',
+            'movieId' => $tmdbId,
+        ]);
     }
 }

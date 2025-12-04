@@ -33,4 +33,15 @@ class Movie extends Model
             ->take(10)
             ->get();
     }
+
+    public function usersWatchlist()
+    {
+        return $this->belongsToMany(User::class, 'user_watchlist');
+    }
+
+    public function usersWatched()
+    {
+        return $this->belongsToMany(User::class, 'user_watched');
+    }
+
 }
