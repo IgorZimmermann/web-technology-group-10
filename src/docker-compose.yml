@@ -19,6 +19,24 @@ services:
       DB_USERNAME: movieweb
       DB_PASSWORD: secret
       RUN_TMDB_FETCH: "1"
+    develop:
+      watch:
+        - action: sync
+          path: ./desk_app
+          target: /var/www/html
+          ignore:
+            - desk_app/vendor/
+            - desk_app/node_modules/
+            - desk_app/storage/
+
+        - action: rebuild
+          path: ./desk_app/composer.json
+
+        - action: rebuild
+          path: ./desk_app/composer.lock
+
+        - action: restart
+          path: ./desk_app/.env
 
 
   db:
