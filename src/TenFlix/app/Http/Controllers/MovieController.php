@@ -4,12 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Movie;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Http;
+use App\Http\Requests\MovieStoreRequest;
+use App\Services\TmdbClient;
+
 
 class MovieController extends Controller
 {
+    public function __construct(private TmdbClient $tmdb)
+    {
+    }
+
     public function destroy(Movie $movie): JsonResponse
     {
         $movie->delete();
@@ -17,46 +21,24 @@ class MovieController extends Controller
         return response()->json(['message' => 'Movie deleted']);
     }
     
-    public function store(Request $request)
+    public function store(MovieStoreRequest $request): JsonResponse
     {
-        $request->validate([
-            'tmdb_id' => 'required|integer',
-        ]);
+        $tmdbId = (int) $request->validated('tmdb_id');
 
-        try {
-            $existingMovie = Movie::where('tmdb_id', $request->tmdb_id)->first();
+        $existingMovie = Movie::where('tmdb_id', $tmdbId)->first();
             if ($existingMovie) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Movie with this TMDB ID already exists'
                 ], 400);
             }
-
-            $apiKey = env('TMDB_API_KEY');
-            if (!$apiKey) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'TMDB API key not configured'
-                ], 500);
-            }
-
-            $response = Http::get("https://api.themoviedb.org/3/movie/{$request->tmdb_id}", [
-                'api_key' => $apiKey,
-            ]);
-
-            if (!$response->successful()) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Failed to fetch movie from TMDB. Please check the TMDB ID.'
-                ], 404);
-            }
-
-            $movieData = $response->json();
-
+    
+        try {
+            $movieData = $this->tmdb->fetchMovie($tmdbId);
             $genres = collect($movieData['genres'] ?? [])->pluck('name')->implode(', ');
 
             $movie = Movie::create([
-                'tmdb_id' => $request->tmdb_id,
+                'tmdb_id' => $tmdbId,
                 'title' => $movieData['title'] ?? 'Unknown',
                 'poster_path' => $movieData['poster_path'] ?? '',
                 'overview' => $movieData['overview'] ?? '',
@@ -70,8 +52,13 @@ class MovieController extends Controller
                 'success' => true,
                 'message' => 'Movie added successfully',
                 'data' => $movie
-            ], 201);
-        } catch (\Exception $e) {
+            ], 201);    
+        } catch (\RuntimeException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 400);
+        } catch (\Throwable $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to add movie: ' . $e->getMessage()
