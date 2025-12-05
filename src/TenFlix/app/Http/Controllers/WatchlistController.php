@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
+use App\Http\Requests\ToggleWatchRequest;
 use App\Models\Movie;
 
 class WatchlistController extends Controller
@@ -32,7 +31,7 @@ class WatchlistController extends Controller
     }
 
     // CHECK IF A MOVIE IS IN WATCHLIST 
-    public function status(Request $request)
+    public function status(ToggleWatchRequest $request) 
     {
         $tmdbId = (int) $request->query('id');
 
@@ -54,39 +53,24 @@ class WatchlistController extends Controller
     }
 
     // TOGGLE WATCHLIST
-    public function setWatchlist(Request $request)
+    public function setWatchlist(ToggleWatchRequest $request)
     {
         return $this->togglePivot($request, 'watchlist');
     }
 
     // TOGGLE WATCHED
-    public function setWatched(Request $request)
+    public function setWatched(ToggleWatchRequest $request)
     {
         return $this->togglePivot($request, 'watched');
     }
 
     // SHARED HELPER FOR WATCHLIST/WATCHED
-    private function togglePivot(Request $request, string $relation)
+    private function togglePivot(ToggleWatchRequest $request, string $relation)
     {
-        // turn js JSON request into objects
-        $body   = json_decode($request->getContent() ?: '{}');
-        $tmdbId = isset($body->id) ? (int) $body->id : 0;
-
-        if (!$tmdbId) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Invalid movie id',
-            ], 400);
-        }
+        $data = $request->validated();
+        $tmdbId = (int) $data['id'];
 
         $movie = Movie::where('tmdb_id', $tmdbId)->first();
-
-        if (!$movie) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Movie not found',
-            ], 404);
-        }
 
         $user = Auth::user();
 
@@ -94,7 +78,6 @@ class WatchlistController extends Controller
             ->where('movies.id', $movie->id)
             ->exists();
 
-        // Laravel pivot helper, if $relation is watchlist it becomes watchlist() and vice versa with watched
         $user->{$relation}()->toggle($movie->id);
 
         return response()->json([

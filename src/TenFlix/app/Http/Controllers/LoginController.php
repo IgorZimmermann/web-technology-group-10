@@ -2,23 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-        ]);
+        $credentials = $request->validated();
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             $user = Auth::user();
 
-            return redirect('index.html')->with(['username', $user->name]);
+            return redirect('index.html')->with('username', $user->name);
         }
 
         return back()->withErrors([
@@ -26,7 +23,7 @@ class LoginController extends Controller
         ])->onlyInput('email');
     }
 
-    public function logout(Request $request)
+    public function logout(LoginRequest $request)
     {
         Auth::logout();
 

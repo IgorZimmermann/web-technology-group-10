@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\UpdateTopTenRequest;
 use App\Models\Movie;
 use Illuminate\Support\Facades\DB;
 
@@ -25,20 +25,17 @@ class TopTenController extends Controller
         return response()->json($defaultTopTen);
     }
 
-    
-    public function update(Request $request)
+    public function update(UpdateTopTenRequest $request)
     {
-        $request->validate([
-            'movieIds' => 'required|array|max:10',
-            'movieIds.*' => 'integer|exists:movies,id'
-        ]);
+        $data = $request->validated();
+        $movieIds = $data['movieIds'];
 
         DB::beginTransaction();
         try {
             Movie::whereNotNull('top_ten_position')
                 ->update(['top_ten_position' => null]);
             
-            foreach ($request->movieIds as $position => $movieId) {
+            foreach ($movieIds as $position => $movieId) {
                 Movie::where('id', $movieId)
                     ->update(['top_ten_position' => $position + 1]);
             }
@@ -52,14 +49,14 @@ class TopTenController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Top 10 updated successfully',
-                'data' => $topTen
+                'data' => $topTen,
             ]);
             
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to update top 10: ' . $e->getMessage()
+                'message' => 'Failed to update top 10: ' . $e->getMessage(),
             ], 500);
         }
     }
@@ -77,8 +74,7 @@ class TopTenController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Top 10 reset to default',
-            'data' => $defaultTopTen
+            'data' => $defaultTopTen,
         ]);
     }
 }
-
