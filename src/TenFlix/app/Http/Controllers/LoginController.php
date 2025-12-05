@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
@@ -23,7 +24,7 @@ class LoginController extends Controller
         ])->onlyInput('email');
     }
 
-    public function logout(LoginRequest $request)
+    public function logout(Request $request)
     {
         Auth::logout();
 

@@ -52,7 +52,24 @@ class FetchMovies extends Command
             sleep(1);
         }
 
+        $this->assignDefaultTopTenIfEmpty();
         $this->info('Import completed!');
+    }
+
+    private function assignDefaultTopTenIfEmpty(): void
+    {
+        if (Movie::whereNotNull('top_ten_position')->exists()) {
+            return;
+        }
+
+        $topTen = Movie::orderBy('vote_count', 'desc')
+            ->take(10)
+            ->get();
+
+        foreach ($topTen as $index => $movie) {
+            $movie->top_ten_position = $index + 1;
+            $movie->save();
+        }
     }
 
     // Fetch the TMDB genre list and convert id into a name map
@@ -76,7 +93,7 @@ class FetchMovies extends Command
         return $genreMap;
     }
 
-    // for each genreIds in a genre map it returns the genre name
+        // for each genreIds in a genre map it returns the genre name
     private function formatGenres(array $genreIds, array $genreMap): ?string
     {
         if (empty($genreIds) || empty($genreMap)) {

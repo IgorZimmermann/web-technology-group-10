@@ -22,21 +22,21 @@ services:
     develop:
       watch:
         - action: sync
-          path: ./desk_app
+          path: ./TenFlix
           target: /var/www/html
           ignore:
-            - desk_app/vendor/
-            - desk_app/node_modules/
-            - desk_app/storage/
+            - TenFlix/vendor/
+            - TenFlix/node_modules/
+            - TenFlix/storage/
 
         - action: rebuild
-          path: ./desk_app/composer.json
+          path: ./TenFlix/composer.json
 
         - action: rebuild
-          path: ./desk_app/composer.lock
+          path: ./TenFlix/composer.lock
 
         - action: restart
-          path: ./desk_app/.env
+          path: ./TenFlix/.env
 
 
   db:

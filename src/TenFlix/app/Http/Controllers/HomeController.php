@@ -10,7 +10,7 @@ class HomeController extends Controller
     {
         $movies = Movie::all();
         $bannerMovie = Movie::orderBy('vote_count', 'desc')->first();
-        $topMovies = Movie::topTen()->get();
+        $topMovies = Movie::getTopTen();
         $actionMovies = Movie::genre('Action')->take(12)->get();
         $thrillerMovies = Movie::genre('Thriller')->take(12)->get();
         $crimeMovies = Movie::genre('Crime')->take(12)->get();

@@ -33,9 +33,9 @@ class WatchlistController extends Controller
     // CHECK IF A MOVIE IS IN WATCHLIST 
     public function status(ToggleWatchRequest $request) 
     {
-        $tmdbId = (int) $request->query('id');
+        $tmdbId = (int) $request->validated('id');
 
-        if (!$tmdbId || !Auth::check()) {
+        if (!Auth::check()) {
             return response()->json(['inWatchlist' => false]);
         }
 
@@ -70,7 +70,7 @@ class WatchlistController extends Controller
         $data = $request->validated();
         $tmdbId = (int) $data['id'];
 
-        $movie = Movie::where('tmdb_id', $tmdbId)->first();
+        $movie = Movie::where('tmdb_id', $tmdbId)->firstOrFail();
 
         $user = Auth::user();
 

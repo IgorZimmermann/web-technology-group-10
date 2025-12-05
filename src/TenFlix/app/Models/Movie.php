@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Movie extends Model
 {
-      protected $fillable = [
+    protected $fillable = [
         'tmdb_id',
         'title',
         'overview',
@@ -16,6 +16,13 @@ class Movie extends Model
         'vote_average',
         'vote_count',
         'top_ten_position',
+    ];
+
+    protected $casts = [
+        'release_date'     => 'date',
+        'vote_average'     => 'float',
+        'vote_count'       => 'int',
+        'top_ten_position' => 'int',
     ];
 
     public function scopeTopTen($query)
@@ -30,7 +37,6 @@ class Movie extends Model
             ->orderBy('vote_count', 'desc');
     }
 
-    
     public static function getTopTen()
     {
         $customTopTen = self::whereNotNull('top_ten_position')
@@ -55,5 +61,4 @@ class Movie extends Model
     {
         return $this->belongsToMany(User::class, 'user_watched');
     }
-
 }
