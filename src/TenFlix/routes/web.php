@@ -31,10 +31,12 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/watchlist', [WatchlistController::class, 'setWatchlist']);
     Route::post('/watched',  [WatchlistController::class, 'setWatched']);
+    
+    // WATCHLIST STATUS
+    Route::get('/api/watchlist-status', [WatchlistController::class, 'status']);
 });
 
-// WATCHLIST STATUS
-Route::get('/api/watchlist-status', [WatchlistController::class, 'status']);
+
 
 // SEARCH FUNCTION
 Route::get('/api/search', [SearchController::class, 'index']);
@@ -46,6 +48,6 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
     Route::post('/api/top-ten/reset', [TopTenController::class, 'reset']);
 
     Route::post('/api/movies', [MovieController::class, 'store']);
-    Route::delete('/api/movies/{movie}', [MovieController::class, 'destroy'])
-        ->name('admin.movies.destroy');
+    Route::delete('/api/movies/{movie}', [MovieController::class, 'destroy'])->name('admin.movies.destroy');
+    
 });
