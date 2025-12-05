@@ -18,6 +18,18 @@ class Movie extends Model
         'top_ten_position',
     ];
 
+    public function scopeTopTen($query)
+    {
+        return $query->whereNotNull('top_ten_position')
+            ->orderBy('top_ten_position', 'asc');
+    }
+
+    public function scopeGenre($query, string $genre)
+    {
+        return $query->where('genre', 'like', "%{$genre}%")
+            ->orderBy('vote_count', 'desc');
+    }
+
     
     public static function getTopTen()
     {
