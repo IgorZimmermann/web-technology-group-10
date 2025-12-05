@@ -14,14 +14,14 @@
             <h1>Login</h1>
         </div>
         @if (session('success'))
-            <div style="background: #d4edda; color: #155724; padding: 10px; margin-bottom: 15px; border-radius: 4px;">
+            <div class="alert alert-success">
                 {{ session('success') }}
             </div>
         @endif
 
         @if ($errors->any())
-            <div style="background: #f8d7da; color: #721c24; padding: 10px; margin-bottom: 15px; border-radius: 4px;">
-                <ul style="margin: 0; padding-left: 20px;">
+            <div class="alert alert-error">
+                <ul>
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
                     @endforeach
@@ -37,7 +37,7 @@
 
             <div class="form-group">
                 <input type="password" name = "password" id="password" placeholder="Password" required>
-            </div>
+            </div>as
 
             <button type="submit" class="submit-btn">Submit</button>
         </form>

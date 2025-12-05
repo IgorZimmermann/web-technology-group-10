@@ -12,8 +12,8 @@
             <h1>Register</h1>
         </div>
         @if ($errors->any())
-            <div style="background: #f8d7da; color: #721c24; padding: 10px; margin-bottom: 15px; border-radius: 4px;">
-                <ul style="margin: 0; padding-left: 20px;">
+            <div class="alert alert-error">
+                <ul>
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
                     @endforeach
