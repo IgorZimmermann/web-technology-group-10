@@ -8,7 +8,7 @@ services:
       db:
         condition: service_healthy
     ports:
-      - "8080:8000"
+      - '8080:8000'
     environment:
       APP_ENV: local
       APP_URL: http://localhost:8080
@@ -18,8 +18,25 @@ services:
       DB_DATABASE: movieweb
       DB_USERNAME: movieweb
       DB_PASSWORD: secret
-      RUN_TMDB_FETCH: "1"
+      RUN_TMDB_FETCH: '1'
+    develop:
+      watch:
+        - action: sync
+          path: ./TenFlix
+          target: /var/www/html
+          ignore:
+            - TenFlix/vendor/
+            - TenFlix/node_modules/
+            - TenFlix/storage/
 
+        - action: rebuild
+          path: ./TenFlix/composer.json
+
+        - action: rebuild
+          path: ./TenFlix/composer.lock
+
+        - action: restart
+          path: ./TenFlix/.env
 
   db:
     image: postgres:16
@@ -30,11 +47,11 @@ services:
       POSTGRES_USER: movieweb
       POSTGRES_PASSWORD: secret
     ports:
-      - "5432:5432"
+      - '5432:5432'
     volumes:
       - dbdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U movieweb -d movieweb"]
+      test: ['CMD-SHELL', 'pg_isready -U movieweb -d movieweb']
       interval: 5s
       timeout: 3s
       retries: 5
