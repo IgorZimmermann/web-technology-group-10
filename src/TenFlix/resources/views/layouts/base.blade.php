@@ -42,11 +42,9 @@
                     </div>
                 @endif
                 <div class="navbar-link-wrapper">
+                    <a href="/browse" class="navbar-oval-btn">Browse</a>
                     <a href="/watchlist" class="navbar-oval-btn">Watchlist</a>
-                <div class="navbar-link-wrapper">
-                <div class="navbar-link-wrapper">
                     <a href="/watched" class="navbar-oval-btn">Seen</a>
-                <div class="navbar-link-wrapper">
                     @auth
                         <span style="color:#c95360">{{ Auth::user()->name }}</span>
                         <form method="POST" action="/logout" class="navbar-oval-btn" style="display: inline; margin: 0;">
