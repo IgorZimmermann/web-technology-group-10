@@ -11,7 +11,6 @@ use App\Models\Movie;
 use App\Models\User;
 
 Route::get('/', function () {
-    $movies = Movie::all();
     $bannerMovie = Movie::orderBy('vote_count', 'desc')->first();
     $topMovies = Movie::getTopTen();
     $actionMovies = Movie::where('genre', 'like', '%Action%')
@@ -27,7 +26,6 @@ Route::get('/', function () {
         ->take(12)
         ->get();
     return view('pages.home', [
-        'movies' => $movies,
         'bannerMovie' => $bannerMovie,
         'topMovies' => $topMovies,
         'actionMovies' => $actionMovies,
@@ -38,6 +36,14 @@ Route::get('/', function () {
 
 Route::get('/index.html', function () {
     return redirect()->route('home');
+});
+
+Route::get('/browse', function () {
+    $movies = Movie::paginate(20);
+    return view('pages.browse', [
+        'listTitle' => "Browse",
+        'movies' => $movies
+    ]);
 });
 
 Route::get('/watchlist', function () {

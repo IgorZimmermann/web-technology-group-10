@@ -1,0 +1,28 @@
+.browse-container {
+    display: grid;
+    grid-template-columns: repeat(5, calc(20dvw - 32px));
+    gap: 10px;
+}
+
+.browse-container .menu-item {
+    width: calc(20dvw - 32px);
+}
+
+.pagination {
+    margin-top: 20px;
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.pagination a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.pagination .disabled {
+    color: #999;
+    cursor: not-allowed;
+}
